@@ -72,16 +72,27 @@ jobs:
           pip install "conan==2.28.0"
           conan profile detect --force
 
-      - name: Build (arm64-v8a, debug)
+      - name: Build (arm64-v8a, debug — installable)
         env:
           QT_INSTALL_DIR: ${{ runner.temp }}
+          CMAKE_BUILD_TYPE: Debug
         run: |
           chmod +x deploy/build.sh
           deploy/build.sh -t android --abi arm64-v8a
+
+      - name: Collect installable APK
+        run: |
+          mkdir -p out
+          f=$(find deploy/build -path '*outputs/apk/debug/*.apk' | head -1)
+          [ -z "$f" ] && f=$(find deploy/build -name '*.apk' ! -iname '*unsigned*' | head -1)
+          echo "picked APK: $f"
+          test -n "$f"
+          cp "$f" out/CottonVPN-arm64-debug.apk
+          ls -la out
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: cottonvpn-apk
-          path: deploy/build/**/*.apk
+          path: out/CottonVPN-arm64-debug.apk
           if-no-files-found: error
