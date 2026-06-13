@@ -23,8 +23,11 @@ jobs:
 
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android/sdk/ndk || true
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/share/swift || true
           df -h | head -3
+
+      - name: Install ninja
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
 
       - name: Install desktop Qt
         uses: jurplel/install-qt-action@v4
