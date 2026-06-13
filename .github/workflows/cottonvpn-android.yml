@@ -1,0 +1,84 @@
+name: CottonVPN Android (debug APK)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [dev]
+    paths:
+      - ".github/workflows/cottonvpn-android.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_PLATFORM: android-28
+      NDK_VERSION: "27.0.11718014"
+      QT_VERSION: "6.10.3"
+      QT_MODULES: "qtremoteobjects qt5compat qtimageformats qtshadertools"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android/sdk/ndk || true
+          df -h | head -3
+
+      - name: Install desktop Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.10.3"
+          host: linux
+          target: desktop
+          arch: linux_gcc_64
+          modules: "qtremoteobjects qt5compat qtimageformats qtshadertools"
+          dir: ${{ runner.temp }}
+          py7zrversion: "==0.22.*"
+
+      - name: Install android arm64 Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.10.3"
+          host: linux
+          target: android
+          arch: android_arm64_v8a
+          modules: "qtremoteobjects qt5compat qtimageformats qtshadertools"
+          dir: ${{ runner.temp }}
+          py7zrversion: "==0.22.*"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK + NDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: "platforms;${{ env.ANDROID_PLATFORM }} ndk;${{ env.NDK_VERSION }}"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install conan
+        run: |
+          pip install "conan==2.28.0"
+          conan profile detect --force
+
+      - name: Build (arm64-v8a, debug)
+        env:
+          QT_INSTALL_DIR: ${{ runner.temp }}
+        run: |
+          chmod +x deploy/build.sh
+          deploy/build.sh -t android --abi arm64-v8a
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: cottonvpn-apk
+          path: deploy/build/**/*.apk
+          if-no-files-found: error
