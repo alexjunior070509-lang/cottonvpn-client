@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       ANDROID_PLATFORM: android-28
       NDK_VERSION: "27.0.11718014"
@@ -104,3 +106,14 @@ jobs:
           name: cottonvpn-apk
           path: out/CottonVPN-arm64.apk
           if-no-files-found: error
+
+      - name: Publish GitHub Release (stable download link)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v1.0.${{ github.run_number }}"
+          gh release create "$TAG" out/CottonVPN-arm64.apk \
+            --title "CottonVPN 1.0.${{ github.run_number }}" \
+            --notes "CottonVPN Android build ${{ github.run_number }}" \
+            --latest \
+          || gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber
