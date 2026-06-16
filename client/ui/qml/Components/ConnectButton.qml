@@ -14,6 +14,10 @@ Button {
     property string defaultButtonColor: AmneziaStyle.color.paleGray
     property string progressButtonColor: AmneziaStyle.color.paleGray
     property string connectedButtonColor: AmneziaStyle.color.goldenApricot
+    // CottonVPN: заливка круга и подсветка по состоянию (явный вкл/выкл)
+    property string connectedFillColor: "#10B981"   // зелёный — VPN включён
+    property string offFillColor: "#FFFFFF"          // белый — выключен
+    property string glowColor: "#7C5CFF"             // сиреневая подсветка (как на сайте)
     property bool buttonActiveFocus: activeFocus && (Qt.platform.os !== "android" || SettingsController.isOnTv())
 
     property bool isFocusable: true
@@ -62,6 +66,22 @@ Button {
         implicitHeight: parent.height
         transformOrigin: Item.Center
 
+        // Заливка круга: зелёная когда подключено, белая когда выключено
+        Rectangle {
+            id: fillDisc
+            anchors.centerIn: parent
+            width: 176
+            height: 176
+            radius: width / 2
+            color: {
+                if (ConnectionController.isConnectionInProgress) return root.offFillColor
+                return ConnectionController.isConnected ? root.connectedFillColor : root.offFillColor
+            }
+            border.width: ConnectionController.isConnected ? 0 : 1
+            border.color: "#ECE7F8"
+            Behavior on color { ColorAnimation { duration: 250 } }
+        }
+
         Shape {
             id: backgroundCircle
             width: parent.implicitWidth
@@ -75,9 +95,9 @@ Button {
                 anchors.fill: backgroundCircle
                 horizontalOffset: 0
                 verticalOffset: 0
-                radius: 10
+                radius: ConnectionController.isConnected ? 24 : 12
                 samples: 25
-                color: root.buttonActiveFocus ? AmneziaStyle.color.paleGray : AmneziaStyle.color.goldenApricot
+                color: ConnectionController.isConnected ? root.connectedFillColor : root.glowColor
                 source: backgroundCircle
             }
 
@@ -176,7 +196,8 @@ Button {
             width: 72
             height: 72
 
-            property color glyphColor: ConnectionController.isConnected ? root.connectedButtonColor : root.defaultButtonColor
+            // На зелёной заливке (подключено) глиф белый; иначе — цвет состояния
+            property color glyphColor: ConnectionController.isConnected ? "#FFFFFF" : root.defaultButtonColor
 
             onGlyphColorChanged: requestPaint()
 

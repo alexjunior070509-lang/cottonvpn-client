@@ -13,26 +13,25 @@ import "../Components"
 PageType {
     id: root
 
-    // CottonVPN — единственный экран в фирменном стиле "cotton".
-    // Первый вход: только поле для ввода ключа.
-    // После ввода ключа: только большая кнопка вкл/выкл. Никаких вкладок.
+    // CottonVPN — единственный экран в стиле сайта (сиреневый градиент, акцент-фиолетовый),
+    // с явным индикатором ВКЛ/ВЫКЛ.
     property bool hasServer: ServersUiController.defaultServerName !== ""
     property bool editingKey: false
     property bool showKeyField: !hasServer || editingKey
 
-    // фирменная cotton-палитра
-    readonly property string cottonPage:     "#FAFAF7"
-    readonly property string cottonCard:      "#FFFFFF"
-    readonly property string cottonInk:       "#0F172A"
-    readonly property string cottonMuted:     "#64748B"
-    readonly property string cottonLine:      "#E7E5DE"
-    readonly property string cottonAccent:    "#14B8A6"
-    readonly property string cottonAccentHov: "#0F9E8E"
-    readonly property string cottonAccentInk: "#0F766E"
+    // палитра лендинга cottonvpn.com
+    readonly property string cInk:     "#241C47"
+    readonly property string cMuted:   "#6C6790"
+    readonly property string cViolet:  "#7C5CFF"
+    readonly property string cLine:    "#ECE7F8"
+    readonly property string cGreen:   "#10B981"
+    readonly property string cCard:    "#FFFFFF"
+
+    readonly property bool isOn: ConnectionController.isConnected
+    readonly property bool isBusy: ConnectionController.isConnectionInProgress
 
     Connections {
         target: ImportController
-
         function onImportFinished() {
             textKey.textField.text = ""
             root.editingKey = false
@@ -43,10 +42,14 @@ PageType {
         }
     }
 
-    // cotton-фон поверх дефолтной тёмной темы
+    // фон-градиент как на сайте
     Rectangle {
         anchors.fill: parent
-        color: root.cottonPage
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#FBF8FF" }
+            GradientStop { position: 0.55; color: "#F4EEFB" }
+            GradientStop { position: 1.0; color: "#FBF6FF" }
+        }
     }
 
     ColumnLayout {
@@ -55,38 +58,80 @@ PageType {
         anchors.bottomMargin: 24 + PageController.safeAreaBottomMargin
         anchors.leftMargin: 24
         anchors.rightMargin: 24
-        spacing: 16
+        spacing: 14
 
         Text {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 8
-
             text: "CottonVPN"
-            color: root.cottonInk
+            color: root.cViolet
             font.family: "PT Root UI VF"
-            font.weight: 700
-            font.pixelSize: 28
-            horizontalAlignment: Text.AlignHCenter
+            font.weight: 800
+            font.pixelSize: 26
         }
 
-        // верхний растяжитель — центрируем содержимое
         Item { Layout.fillHeight: true; Layout.fillWidth: true }
 
-        // === состояние "ключ есть": только большая кнопка вкл/выкл ===
+        // ===== есть ключ: большая кнопка + явный статус =====
         ConnectButton {
             id: connectButton
             objectName: "connectButton"
-
             visible: !root.showKeyField
-
             Layout.alignment: Qt.AlignHCenter
 
-            defaultButtonColor: root.cottonAccent
-            progressButtonColor: root.cottonAccent
-            connectedButtonColor: root.cottonAccentInk
+            defaultButtonColor: root.cMuted        // кольцо/глиф когда выключено
+            connectedButtonColor: root.cGreen      // кольцо когда включено
+            connectedFillColor: root.cGreen        // заливка круга когда включено
+            offFillColor: root.cCard               // белый круг когда выключено
+            glowColor: root.cViolet
         }
 
-        // === состояние "ключа нет": поле ввода ключа ===
+        // индикатор состояния: точка + крупное слово + подпись
+        ColumnLayout {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 18
+            visible: !root.showKeyField
+            spacing: 4
+
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 8
+
+                Rectangle {
+                    id: statusDot
+                    width: 12; height: 12; radius: 6
+                    Layout.alignment: Qt.AlignVCenter
+                    color: root.isOn ? root.cGreen : (root.isBusy ? root.cViolet : "#C7C2DE")
+
+                    SequentialAnimation on opacity {
+                        running: root.isOn || root.isBusy
+                        loops: Animation.Infinite
+                        NumberAnimation { from: 1.0; to: 0.3; duration: 900 }
+                        NumberAnimation { from: 0.3; to: 1.0; duration: 900 }
+                    }
+                }
+
+                Text {
+                    text: root.isOn ? qsTr("Подключено")
+                                    : (root.isBusy ? qsTr("Подключение…") : qsTr("Отключено"))
+                    color: root.isOn ? root.cGreen : root.cInk
+                    font.family: "PT Root UI VF"
+                    font.weight: 800
+                    font.pixelSize: 22
+                }
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                text: root.isOn ? qsTr("Соединение защищено")
+                                : (root.isBusy ? qsTr("Устанавливаем соединение") : qsTr("Нажми кнопку, чтобы включить"))
+                color: root.cMuted
+                font.family: "PT Root UI VF"
+                font.pixelSize: 14
+            }
+        }
+
+        // ===== ключа нет: поле ввода =====
         ColumnLayout {
             Layout.fillWidth: true
             visible: root.showKeyField
@@ -94,10 +139,8 @@ PageType {
 
             Text {
                 Layout.fillWidth: true
-                Layout.bottomMargin: 4
-
                 text: qsTr("Вставь ключ из бота, чтобы подключиться")
-                color: root.cottonMuted
+                color: root.cMuted
                 font.family: "PT Root UI VF"
                 font.pixelSize: 16
                 wrapMode: Text.WordWrap
@@ -107,18 +150,17 @@ PageType {
             TextFieldWithHeaderType {
                 id: textKey
                 objectName: "homeKeyField"
-
                 Layout.fillWidth: true
 
                 headerText: qsTr("Ключ")
                 buttonText: qsTr("Вставить")
 
-                backgroundColor: root.cottonCard
-                borderColor: root.cottonLine
-                borderFocusedColor: root.cottonAccent
-                bgBorderHoveredColor: root.cottonAccent
-                headerTextColor: root.cottonMuted
-                textFieldTextColor: root.cottonInk
+                backgroundColor: root.cCard
+                borderColor: root.cLine
+                borderFocusedColor: root.cViolet
+                bgBorderHoveredColor: root.cViolet
+                headerTextColor: root.cMuted
+                textFieldTextColor: root.cInk
 
                 clickedFunc: function() {
                     textField.text = ""
@@ -129,17 +171,14 @@ PageType {
             BasicButtonType {
                 id: applyKeyButton
                 objectName: "homeApplyKeyButton"
-
                 Layout.fillWidth: true
-
                 visible: textKey.textField.text !== ""
 
                 text: qsTr("Подключить ключ")
-
-                defaultColor: root.cottonAccent
-                hoveredColor: root.cottonAccentHov
-                pressedColor: root.cottonAccentInk
-                textColor: root.cottonCard
+                defaultColor: root.cViolet
+                hoveredColor: "#6B4FE6"
+                pressedColor: "#5B41D6"
+                textColor: root.cCard
 
                 clickedFunc: function() {
                     if (ImportController.extractConfigFromData(textKey.textField.text)) {
@@ -149,18 +188,16 @@ PageType {
             }
         }
 
-        // нижний растяжитель
         Item { Layout.fillHeight: true; Layout.fillWidth: true }
 
-        // ссылка "Сменить ключ" — показывается только когда ключ уже есть
+        // ссылка «Сменить ключ» — только когда ключ уже есть
         Text {
             Layout.alignment: Qt.AlignHCenter
             visible: root.hasServer && !root.editingKey
-
             text: qsTr("Сменить ключ")
-            color: root.cottonAccentInk
+            color: root.cViolet
             font.family: "PT Root UI VF"
-            font.weight: 600
+            font.weight: 700
             font.pixelSize: 15
 
             MouseArea {
