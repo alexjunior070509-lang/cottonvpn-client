@@ -87,24 +87,32 @@ jobs:
           QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: |
           chmod +x deploy/build.sh
-          deploy/build.sh -t android --abi arm64-v8a --sign
+          deploy/build.sh -t android --abi arm64-v8a --sign --aab
 
-      - name: Collect signed APK
+      - name: Collect signed APK + AAB
         run: |
           mkdir -p out
-          # подписанный release APK (не *-unsigned)
+          # подписанный release APK (не *-unsigned) — для прямой установки
           f=$(find deploy/build -path '*outputs/apk/release/*.apk' ! -iname '*unsigned*' | head -1)
           [ -z "$f" ] && f=$(find deploy/build -name '*.apk' ! -iname '*unsigned*' | head -1)
           echo "picked APK: $f"
           test -n "$f"
           cp "$f" out/CottonVPN-arm64.apk
+          # подписанный release AAB — для загрузки в Google Play
+          a=$(find deploy/build -path '*outputs/bundle/release/*.aab' ! -iname '*unsigned*' | head -1)
+          [ -z "$a" ] && a=$(find deploy/build -name '*.aab' ! -iname '*unsigned*' | head -1)
+          echo "picked AAB: $a"
+          test -n "$a"
+          cp "$a" out/CottonVPN-release.aab
           ls -la out
 
-      - name: Upload APK
+      - name: Upload APK + AAB
         uses: actions/upload-artifact@v4
         with:
           name: cottonvpn-apk
-          path: out/CottonVPN-arm64.apk
+          path: |
+            out/CottonVPN-arm64.apk
+            out/CottonVPN-release.aab
           if-no-files-found: error
 
       - name: Publish GitHub Release (stable download link)
@@ -112,8 +120,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="v1.0.${{ github.run_number }}"
-          gh release create "$TAG" out/CottonVPN-arm64.apk \
+          gh release create "$TAG" out/CottonVPN-arm64.apk out/CottonVPN-release.aab \
             --title "CottonVPN 1.0.${{ github.run_number }}" \
             --notes "CottonVPN Android build ${{ github.run_number }}" \
             --latest \
-          || gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber
+          || { gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber; gh release upload "$TAG" out/CottonVPN-release.aab --clobber; }
