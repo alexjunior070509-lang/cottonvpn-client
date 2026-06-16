@@ -66,7 +66,7 @@ class ServiceNotification(private val context: Context) {
 
         return notificationBuilder
             .setSmallIcon(R.drawable.ic_amnezia_round)
-            .setContentTitle((serverName ?: "CottonVPN") + (protocol?.let { " $it" } ?: ""))
+            .setContentTitle(serverName ?: "CottonVPN")
             .setContentText(context.getString(state))
             .setSubText(speedString)
             .setWhen(System.currentTimeMillis())
