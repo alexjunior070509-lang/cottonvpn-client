@@ -24,14 +24,10 @@ PageType {
         target: PageController
 
         function onGoToPageHome() {
-            if (PageController.isStartPageVisible()) {
-                tabBar.visible = false
-                tabBarStackView.goToTabBarPage(PageEnum.PageSetupWizardStart)
-            } else {
-                tabBar.visible = true
-                tabBar.setCurrentIndex(0)
-                tabBarStackView.goToTabBarPage(PageEnum.PageHome)
-            }
+            // CottonVPN: всегда главный экран (большая кнопка + поле ключа), без setup-визарда
+            tabBar.visible = true
+            tabBar.setCurrentIndex(0)
+            tabBarStackView.goToTabBarPage(PageEnum.PageHome)
         }
 
         function onGoToPageSettings() {
@@ -280,16 +276,12 @@ PageType {
         }
 
         Component.onCompleted: {
-            var pagePath
-            if (PageController.isStartPageVisible()) {
-                tabBar.visible = false
-                pagePath = PageController.getPagePath(PageEnum.PageSetupWizardStart)
-            } else {
-                tabBar.visible = true
-                pagePath = PageController.getPagePath(PageEnum.PageHome)
+            // CottonVPN: стартуем сразу на главном экране (кнопка + поле ключа)
+            tabBar.visible = true
+            var pagePath = PageController.getPagePath(PageEnum.PageHome)
+            if (ServersUiController.getServersCount() > 0) {
                 ServersUiController.setProcessedServerId(ServersUiController.defaultServerId)
             }
-
             tabBarStackView.push(pagePath, { "objectName" : pagePath })
         }
 
