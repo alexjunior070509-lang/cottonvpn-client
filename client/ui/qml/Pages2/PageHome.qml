@@ -132,7 +132,7 @@ PageType {
 
                 Layout.fillWidth: true
 
-                enabled: textKey.textField.text !== ""
+                visible: textKey.textField.text !== ""
 
                 text: qsTr("Подключить ключ")
 
