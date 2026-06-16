@@ -308,6 +308,8 @@ PageType {
         id: tabBar
         objectName: "tabBar"
 
+        visible: false // CottonVPN: без вкладок — скрыт с первого кадра, чтобы не мелькал
+
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.bottom: parent.bottom

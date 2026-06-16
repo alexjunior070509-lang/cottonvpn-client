@@ -61,7 +61,7 @@ Window  {
     maximumWidth: 600
     maximumHeight: 800
 
-    color: AmneziaStyle.color.midnightBlack
+    color: "#FAFAF7" // CottonVPN: светлый фон окна, чтобы на старте не мелькал тёмный экран
 
     onClosing: function(close) {
         close.accepted = false

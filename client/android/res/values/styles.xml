@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF0E0E11</color>
+    <color name="cottonPage">#FFFAFAF7</color>
     <style name="NoActionBar">
-        <item name="android:windowBackground">@color/black</item>
-        <item name="android:colorBackground">@color/black</item>
+        <item name="android:windowBackground">@color/cottonPage</item>
+        <item name="android:colorBackground">@color/cottonPage</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
