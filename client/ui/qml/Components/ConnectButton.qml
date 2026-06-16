@@ -167,18 +167,42 @@ Button {
         }
     }
 
-    contentItem: Text {
-        height: 24
+    contentItem: Item {
+        anchors.fill: parent
 
-        font.family: "PT Root UI VF"
-        font.weight: 700
-        font.pixelSize: 20
+        Canvas {
+            id: powerGlyph
+            anchors.centerIn: parent
+            width: 72
+            height: 72
 
-        color: ConnectionController.isConnected ? connectedButtonColor : defaultButtonColor
-        text: root.text
+            property color glyphColor: ConnectionController.isConnected ? root.connectedButtonColor : root.defaultButtonColor
 
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+            onGlyphColorChanged: requestPaint()
+
+            onPaint: {
+                var ctx = getContext("2d")
+                ctx.reset()
+                var cx = width / 2
+                var cy = height / 2
+                var r = 22
+                ctx.lineWidth = 5
+                ctx.lineCap = "round"
+                ctx.strokeStyle = glyphColor
+
+                // кольцо с разрывом сверху
+                var gap = 0.42 // половина разрыва в радианах
+                ctx.beginPath()
+                ctx.arc(cx, cy, r, -Math.PI / 2 + gap, -Math.PI / 2 - gap + 2 * Math.PI, false)
+                ctx.stroke()
+
+                // вертикальная черта (символ питания)
+                ctx.beginPath()
+                ctx.moveTo(cx, cy - 4)
+                ctx.lineTo(cx, cy - r - 6)
+                ctx.stroke()
+            }
+        }
     }
 
     onClicked: {
