@@ -5,7 +5,7 @@
     <name>AdLabel</name>
     <message>
         <location filename="../ui/qml/Components/AdLabel.qml" line="57"/>
-        <source>Amnezia Premium - for access to all websites and online resources</source>
+        <source>CottonVPN Premium - for access to all websites and online resources</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -82,27 +82,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Amnezia Premium - A classic VPN for comfortable work, downloading large files, and watching videos in high resolution. It works for all websites, even in countries with the highest level of internet censorship.</source>
-        <translation type="vanished">Amnezia Premium - သက်တောင့်သက်သာအလုပ်လုပ်နိုင်ဖို့အတွက်နှင့် ကြီးမားသောဖိုင်များကိုဒေါင်းလုဒ်လုပ်ခြင်းနှင့် ဗီဒီယိုများကိုကြည်လင်ပြတ်သားစွာကြည့်ရှုခြင်းတို့အတွက် အသုံးပြုနိုင်သော VPN ဖြစ်ပါတယ်။ အင်တာနက်ဆင်ဆာဖြတ်မှု အဆင့်အမြင့်ဆုံးနိုင်ငံများတွင်ပင် မည်သည့်ဆိုက်များအတွက်မဆို အလုပ်လုပ်ပါသည်။.</translation>
+        <source>CottonVPN Premium - A classic VPN for comfortable work, downloading large files, and watching videos in high resolution. It works for all websites, even in countries with the highest level of internet censorship.</source>
+        <translation type="vanished">CottonVPN Premium - သက်တောင့်သက်သာအလုပ်လုပ်နိုင်ဖို့အတွက်နှင့် ကြီးမားသောဖိုင်များကိုဒေါင်းလုဒ်လုပ်ခြင်းနှင့် ဗီဒီယိုများကိုကြည်လင်ပြတ်သားစွာကြည့်ရှုခြင်းတို့အတွက် အသုံးပြုနိုင်သော VPN ဖြစ်ပါတယ်။ အင်တာနက်ဆင်ဆာဖြတ်မှု အဆင့်အမြင့်ဆုံးနိုင်ငံများတွင်ပင် မည်သည့်ဆိုက်များအတွက်မဆို အလုပ်လုပ်ပါသည်။.</translation>
     </message>
     <message>
-        <source>Amnezia Free is a free VPN to bypass blocking in countries with high levels of internet censorship</source>
-        <translation type="vanished">Amnezia Free သည် အင်တာနက်ဆင်ဆာဖြတ်တောက်မှု မြင့်မားသောနိုင်ငံများတွင် ပိတ်ဆို့ခြင်းကို ကျော်ဖြတ်ရန်အတွက် အခမဲ့ VPN တစ်ခုဖြစ်ပါသည်။</translation>
+        <source>CottonVPN Free is a free VPN to bypass blocking in countries with high levels of internet censorship</source>
+        <translation type="vanished">CottonVPN Free သည် အင်တာနက်ဆင်ဆာဖြတ်တောက်မှု မြင့်မားသောနိုင်ငံများတွင် ပိတ်ဆို့ခြင်းကို ကျော်ဖြတ်ရန်အတွက် အခမဲ့ VPN တစ်ခုဖြစ်ပါသည်။</translation>
     </message>
     <message>
         <location filename="../ui/models/api/apiServicesModel.cpp" line="68"/>
-        <source>Amnezia Premium is classic VPN for seamless work, downloading large files, and watching videos. Access all websites and online resources. Speeds up to %1 Mbps.</source>
+        <source>CottonVPN Premium is classic VPN for seamless work, downloading large files, and watching videos. Access all websites and online resources. Speeds up to %1 Mbps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/models/api/apiServicesModel.cpp" line="72"/>
         <location filename="../ui/models/api/apiServicesModel.cpp" line="85"/>
-        <source>AmneziaFree provides free unlimited access to a basic set of web sites, such as Facebook, Instagram, Twitter (X), Discord, Telegram, and others. YouTube is not included in the free plan.</source>
+        <source>CottonVPNFree provides free unlimited access to a basic set of web sites, such as Facebook, Instagram, Twitter (X), Discord, Telegram, and others. YouTube is not included in the free plan.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/models/api/apiServicesModel.cpp" line="82"/>
-        <source>Amnezia Premium is classic VPN for for seamless work, downloading large files, and watching videos. Access all websites and online resources.</source>
+        <source>CottonVPN Premium is classic VPN for for seamless work, downloading large files, and watching videos. Access all websites and online resources.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -480,8 +480,8 @@ Already installed containers were found on the server. All installed containers 
     <message>
         <location filename="../ui/notificationhandler.cpp" line="63"/>
         <location filename="../ui/notificationhandler.cpp" line="70"/>
-        <source>AmneziaVPN</source>
-        <translation>AmneziaVPN</translation>
+        <source>CottonVPN</source>
+        <translation>CottonVPN</translation>
     </message>
     <message>
         <location filename="../ui/notificationhandler.cpp" line="64"/>
@@ -495,8 +495,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/notificationhandler.cpp" line="94"/>
-        <source>AmneziaVPN notification</source>
-        <translation>AmneziaVPN နိုတီ</translation>
+        <source>CottonVPN notification</source>
+        <translation>CottonVPN နိုတီ</translation>
     </message>
     <message>
         <location filename="../ui/notificationhandler.cpp" line="95"/>
@@ -566,8 +566,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgClientSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="97"/>
-        <source>AmneziaWG settings</source>
-        <translation type="unfinished">AmneziaWG ဆက်တင်များ</translation>
+        <source>WireGuard settings</source>
+        <translation type="unfinished">WireGuard ဆက်တင်များ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="105"/>
@@ -619,8 +619,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="97"/>
-        <source>AmneziaWG settings</source>
-        <translation>AmneziaWG ဆက်တင်များ</translation>
+        <source>WireGuard settings</source>
+        <translation>WireGuard ဆက်တင်များ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="127"/>
@@ -1168,8 +1168,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageServiceDnsSettings.qml" line="75"/>
-        <source>Cannot remove AmneziaDNS from running server</source>
-        <translation>AmneziaDNS ကို လည်ပတ်နေသည့်ဆာဗာမှ ဖယ်ရှား၍မရပါ</translation>
+        <source>Cannot remove DNS from running server</source>
+        <translation>DNS ကို လည်ပတ်နေသည့်ဆာဗာမှ ဖယ်ရှား၍မရပါ</translation>
     </message>
 </context>
 <context>
@@ -1377,8 +1377,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="107"/>
-        <source>About AmneziaVPN</source>
-        <translation>AmneziaVPN အကြောင်း</translation>
+        <source>About CottonVPN</source>
+        <translation>CottonVPN အကြောင်း</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="123"/>
@@ -1395,13 +1395,13 @@ Already installed containers were found on the server. All installed containers 
     <name>PageSettingsAbout</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="144"/>
-        <source>Support Amnezia</source>
-        <translation>Amnezia ကိုကူညီပံ့ပိုးမည်</translation>
+        <source>Support CottonVPN</source>
+        <translation>CottonVPN ကိုကူညီပံ့ပိုးမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="159"/>
-        <source>Amnezia is a free and open-source application. You can support the developers if you like it.</source>
-        <translation>Amnezia သည် အခမဲ့ open-source application တစ်ခုဖြစ်သည်။ သင်နှစ်သက်ပါက developer များကို ပံ့ပိုးနိုင်ပါသည်.</translation>
+        <source>CottonVPN is a free and open-source application. You can support the developers if you like it.</source>
+        <translation>CottonVPN သည် အခမဲ့ open-source application တစ်ခုဖြစ်သည်။ သင်နှစ်သက်ပါက developer များကို ပံ့ပိုးနိုင်ပါသည်.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="169"/>
@@ -1420,7 +1420,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="39"/>
-        <source>https://t.me/amnezia_vpn_en</source>
+        <source>https://t.me/cottonvpn_bot</source>
         <translation>https://t.me/amnezia_vpn</translation>
     </message>
     <message>
@@ -1429,7 +1429,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="46"/>
-        <source>support@amnezia.org</source>
+        <source>support@cottonvpn.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1443,7 +1443,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="50"/>
-        <source>mailto:support@amnezia.org</source>
+        <source>mailto:support@cottonvpn.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1637,7 +1637,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiInstructions.qml" line="102"/>
-        <source>Setup guides on the Amnezia website</source>
+        <source>Setup guides on the CottonVPN website</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1645,8 +1645,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageSettingsApiNativeConfigs</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="23"/>
-        <source>Save AmneziaVPN config</source>
-        <translation type="unfinished">AmneziaWG config ကိုသိမ်းဆည်းမည်</translation>
+        <source>Save CottonVPN config</source>
+        <translation type="unfinished">WireGuard config ကိုသိမ်းဆည်းမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="48"/>
@@ -1655,7 +1655,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="49"/>
-        <source>For router setup or the AmneziaWG app</source>
+        <source>For router setup or the WireGuard app</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1777,7 +1777,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiServerInfo.qml" line="190"/>
-        <source>Amnezia Premium subscription key</source>
+        <source>CottonVPN Premium subscription key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1899,7 +1899,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSupport.qml" line="31"/>
-        <source>support@amnezia.org</source>
+        <source>support@cottonvpn.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2085,8 +2085,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="212"/>
-        <source>All settings will be reset to default. All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>ဆက်တင်အားလုံးကို မူရင်းအတိုင်း ပြန်လည်သတ်မှတ်ပါမည်။ ထည့်သွင်းထားသော AmneziaVPN ဝန်ဆောင်မှုများအားလုံးသည် ဆာဗာပေါ်တွင် ဆက်လက်ရှိနေမည်ဖြစ်သည်။.</translation>
+        <source>All settings will be reset to default. All installed CottonVPN services will still remain on the server.</source>
+        <translation>ဆက်တင်အားလုံးကို မူရင်းအတိုင်း ပြန်လည်သတ်မှတ်ပါမည်။ ထည့်သွင်းထားသော CottonVPN ဝန်ဆောင်မှုများအားလုံးသည် ဆာဗာပေါ်တွင် ဆက်လက်ရှိနေမည်ဖြစ်သည်။.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="213"/>
@@ -2123,8 +2123,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="74"/>
-        <source>The backup will contain your passwords and private keys for all servers added to AmneziaVPN. Keep this information in a secure place.</source>
-        <translation>အရံဖိုင်တွင် AmneziaVPN သို့ ထည့်ထားသော ဆာဗာအားလုံးအတွက် သင့်စကားဝှက်များနှင့် လျှို့ဝှက်သော့များ ပါဝင်ပါမည်။ ဤအချက်အလက်ကို လုံခြုံသောနေရာတွင် ထားပါ။.</translation>
+        <source>The backup will contain your passwords and private keys for all servers added to CottonVPN. Keep this information in a secure place.</source>
+        <translation>အရံဖိုင်တွင် CottonVPN သို့ ထည့်ထားသော ဆာဗာအားလုံးအတွက် သင့်စကားဝှက်များနှင့် လျှို့ဝှက်သော့များ ပါဝင်ပါမည်။ ဤအချက်အလက်ကို လုံခြုံသောနေရာတွင် ထားပါ။.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="85"/>
@@ -2192,13 +2192,13 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="52"/>
-        <source>Use AmneziaDNS</source>
-        <translation>AmneziaDNS ကို အသုံးပြုမည်</translation>
+        <source>Use DNS</source>
+        <translation>DNS ကို အသုံးပြုမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="53"/>
-        <source>If AmneziaDNS is installed on the server</source>
-        <translation>အကယ်၍ AmneziaDNS ကို ဆာဗာတွင် ထည့်သွင်းထားလျှင်</translation>
+        <source>If DNS is installed on the server</source>
+        <translation>အကယ်၍ DNS ကို ဆာဗာတွင် ထည့်သွင်းထားလျှင်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="69"/>
@@ -2207,8 +2207,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="70"/>
-        <source>When AmneziaDNS is not used or installed</source>
-        <translation>AmneziaDNS ကို အသုံးမပြု သို့မဟုတ် ထည့်သွင်းခြင်းမပြုသည့်အခါ</translation>
+        <source>When DNS is not used or installed</source>
+        <translation>DNS ကို အသုံးမပြု သို့မဟုတ် ထည့်သွင်းခြင်းမပြုသည့်အခါ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="108"/>
@@ -2264,8 +2264,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="61"/>
-        <source>If AmneziaDNS is not used or installed</source>
-        <translation>AmneziaDNS ကို အသုံးမပြု သို့မဟုတ် ထည့်သွင်းခြင်းမပြုသည့်အခါ</translation>
+        <source>If DNS is not used or installed</source>
+        <translation>DNS ကို အသုံးမပြု သို့မဟုတ် ထည့်သွင်းခြင်းမပြုသည့်အခါ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="68"/>
@@ -2392,7 +2392,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="176"/>
-        <source>AmneziaVPN logs</source>
+        <source>CottonVPN logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2412,7 +2412,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="205"/>
-        <source>AmneziaVPN-service logs</source>
+        <source>CottonVPN-service logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2456,8 +2456,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="90"/>
-        <source>Check the server for previously installed Amnezia services</source>
-        <translation>ယခင်က ထည့်သွင်းထားသော Amnezia ဝန်ဆောင်မှုများရှိမရှိ ဆာဗာကို စစ်ဆေးမည်</translation>
+        <source>Check the server for previously installed CottonVPN services</source>
+        <translation>ယခင်က ထည့်သွင်းထားသော CottonVPN ဝန်ဆောင်မှုများရှိမရှိ ဆာဗာကို စစ်ဆေးမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="91"/>
@@ -2496,8 +2496,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="190"/>
-        <source>Do you want to clear server from Amnezia software?</source>
-        <translation>ဆာဗာကို Amnezia ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်းလိုပါသလား?</translation>
+        <source>Do you want to clear server from CottonVPN software?</source>
+        <translation>ဆာဗာကို CottonVPN ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်းလိုပါသလား?</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="191"/>
@@ -2506,8 +2506,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="197"/>
-        <source>Cannot clear server from Amnezia software during active connection</source>
-        <translation>လက်ရှိချိတ်ဆက်မှုတစ်ခုရှိနေချိန်တွင် ဆာဗာကို Amnezia ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်း၍မရပါ</translation>
+        <source>Cannot clear server from CottonVPN software during active connection</source>
+        <translation>လက်ရှိချိတ်ဆက်မှုတစ်ခုရှိနေချိန်တွင် ဆာဗာကို CottonVPN ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်း၍မရပါ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="225"/>
@@ -2531,13 +2531,13 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="153"/>
-        <source>All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>ထည့်သွင်းထားသော AmneziaVPN ဝန်ဆောင်မှုများအားလုံးသည် ဆာဗာပေါ်တွင် ဆက်လက်ရှိနေမည်ဖြစ်သည်.</translation>
+        <source>All installed CottonVPN services will still remain on the server.</source>
+        <translation>ထည့်သွင်းထားသော CottonVPN ဝန်ဆောင်မှုများအားလုံးသည် ဆာဗာပေါ်တွင် ဆက်လက်ရှိနေမည်ဖြစ်သည်.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="186"/>
-        <source>Clear server from Amnezia software</source>
-        <translation>ဆာဗာကို Amnezia ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်းမည်</translation>
+        <source>Clear server from CottonVPN software</source>
+        <translation>ဆာဗာကို CottonVPN ဆော့ဖ်ဝဲလ်မှ ရှင်းလင်းမည်</translation>
     </message>
 </context>
 <context>
@@ -2796,8 +2796,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageSetupWizardApiServicesList</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="38"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia မှ VPN</translation>
+        <source>VPN by CottonVPN</source>
+        <translation>CottonVPN မှ VPN</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="39"/>
@@ -2864,7 +2864,7 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="228"/>
-        <source>Site Amnezia</source>
+        <source>Site CottonVPN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2874,13 +2874,13 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="251"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia မှ VPN</translation>
+        <source>VPN by CottonVPN</source>
+        <translation>CottonVPN မှ VPN</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="252"/>
-        <source>Connect to classic paid and free VPN services from Amnezia</source>
-        <translation>Amnezia မှ အခပေးနှင့် အခမဲ့ မူလ VPN ဝန်ဆောင်မှုများသို့ ချိတ်ဆက်မည်</translation>
+        <source>Connect to classic paid and free VPN services from CottonVPN</source>
+        <translation>CottonVPN မှ အခပေးနှင့် အခမဲ့ မူလ VPN ဝန်ဆောင်မှုများသို့ ချိတ်ဆက်မည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="268"/>
@@ -2889,8 +2889,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="269"/>
-        <source>Configure Amnezia VPN on your own server</source>
-        <translation>Amnezia VPN ကို သင်၏ကိုယ်ပိုင်ဆာဗာပေါ်တွင် စီစဥ်ချိန်ညှိမည်</translation>
+        <source>Configure CottonVPN VPN on your own server</source>
+        <translation>CottonVPN VPN ကို သင်၏ကိုယ်ပိုင်ဆာဗာပေါ်တွင် စီစဥ်ချိန်ညှိမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="280"/>
@@ -2967,8 +2967,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="160"/>
-        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the Amnezia or any third parties</source>
-        <translation>သင်ထည့်သွင်းသည့်ဒေတာအားလုံးကို တင်းကြပ်လုံခြုံစွာလျှို့ဝှက်ထားမည်ဖြစ်ပြီး Amnezia သို့မဟုတ် မည်သည့်ပြင်ပအဖွဲ့အစည်းကိုမျှ မျှဝေမည် သို့မဟုတ် ထုတ်ဖော်မည်မဟုတ်ပါ</translation>
+        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the CottonVPN or any third parties</source>
+        <translation>သင်ထည့်သွင်းသည့်ဒေတာအားလုံးကို တင်းကြပ်လုံခြုံစွာလျှို့ဝှက်ထားမည်ဖြစ်ပြီး CottonVPN သို့မဟုတ် မည်သည့်ပြင်ပအဖွဲ့အစည်းကိုမျှ မျှဝေမည် သို့မဟုတ် ထုတ်ဖော်မည်မဟုတ်ပါ</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="171"/>
@@ -3037,13 +3037,13 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="65"/>
-        <source>Amnezia has detected that your server is currently </source>
-        <translation>Amnezia သည် သင့်ဆာဗာက </translation>
+        <source>CottonVPN has detected that your server is currently </source>
+        <translation>CottonVPN သည် သင့်ဆာဗာက </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="66"/>
-        <source>busy installing other software. Amnezia installation </source>
-        <translation>အခြားဆော့ဖ်ဝဲကို ထည့်သွင်းနေသောကြောင့် အလုပ်ရှုပ်နေကြောင်းထောက်လှန်းမိပါသည်. Amnezia ထည့်သွင်းခြင်းလုပ်ငန်းစဥ် </translation>
+        <source>busy installing other software. CottonVPN installation </source>
+        <translation>အခြားဆော့ဖ်ဝဲကို ထည့်သွင်းနေသောကြောင့် အလုပ်ရှုပ်နေကြောင်းထောက်လှန်းမိပါသည်. CottonVPN ထည့်သွင်းခြင်းလုပ်ငန်းစဥ် </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="67"/>
@@ -3245,8 +3245,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="72"/>
-        <source>Save AmneziaWG config</source>
-        <translation>AmneziaWG config ကိုသိမ်းဆည်းမည်</translation>
+        <source>Save WireGuard config</source>
+        <translation>WireGuard config ကိုသိမ်းဆည်းမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="79"/>
@@ -3265,13 +3265,13 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="119"/>
-        <source>For the AmneziaVPN app</source>
-        <translation>AmneziaVPN အက်ပ်အတွက်</translation>
+        <source>For the CottonVPN app</source>
+        <translation>CottonVPN အက်ပ်အတွက်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="134"/>
-        <source>AmneziaWG native format</source>
-        <translation>AmneziaWG မူရင်းဖော်မတ်</translation>
+        <source>WireGuard native format</source>
+        <translation>WireGuard မူရင်းဖော်မတ်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="139"/>
@@ -3891,8 +3891,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="49"/>
-        <source>Amnezia helper service error</source>
-        <translation>Amnezia helper ဝန်ဆောင်မှု မှားယွင်းမှု</translation>
+        <source>CottonVPN helper service error</source>
+        <translation>CottonVPN helper ဝန်ဆောင်မှု မှားယွင်းမှု</translation>
     </message>
     <message>
         <location filename="../core/errorstrings.cpp" line="50"/>
@@ -4041,7 +4041,7 @@ Immediately after receiving the first data packet, Cloak authenticates the incom
 
 If there is a extreme level of Internet censorship in your region, we advise you to use only OpenVPN over Cloak from the first connection
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * High power consumption on mobile devices
 * Flexible settings
 * Not recognised by DPI analysis systems
@@ -4059,7 +4059,7 @@ Cloak သည် ပက်ကတ်မက်တာဒေတာကို မွမ
 
 သင့်ဒေသတွင်အင်တာနက်ဆင်ဆာဖြတ်တောက်မှုအလွန်ခံစားနေရပါက၊ ပထမဆုံးချိတ်ဆက်မှုမှ Cloak တွင် OpenVPN ကိုသာအသုံးပြုရန်အကြံပြုအပ်ပါသည်.
 
-* ပလက်ဖောင်းအားလုံးတွင်ရှိသော AmneziaVPN တွင်ရရှိနိုင်ပါသည်
+* ပလက်ဖောင်းအားလုံးတွင်ရှိသော CottonVPN တွင်ရရှိနိုင်ပါသည်
 * မိုဘိုင်းစက်ပစ္စည်းများတွင် ပါဝါသုံးစွဲမှုမြင့်မားခြင်း
 * ပြောင်းလွယ်ပြင်ဆင်ရန်လွယ်သောဆက်တင်များ
 * DPI ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များက ‌ထောက်လှန်းမသိရှိနိုင်ပါ
@@ -4071,7 +4071,7 @@ Cloak သည် ပက်ကတ်မက်တာဒေတာကို မွမ
 WireGuard provides stable VPN connection and high performance on all devices. It uses hard-coded encryption settings. WireGuard compared to OpenVPN has lower latency and better data transfer throughput.
 WireGuard is very susceptible to blocking due to its distinct packet signatures. Unlike some other VPN protocols that employ obfuscation techniques, the consistent signature patterns of WireGuard packets can be more easily identified and thus blocked by advanced Deep Packet Inspection (DPI) systems and other network monitoring tools.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Low power consumption
 * Minimum number of settings
 * Easily recognised by DPI analysis systems, susceptible to blocking
@@ -4080,7 +4080,7 @@ WireGuard is very susceptible to blocking due to its distinct packet signatures.
 WireGuard သည် ၎င်းအားအသုံးပြုထားသောစက်အားလုံးကို တည်ငြိမ်သော VPN ချိတ်ဆက်မှုနှင့် စွမ်းဆောင်ရည်မြင့်မားမှုကို ရရှိစေပါသည်။ Hard-coded encryption ဆက်တင်များကို အသုံးပြုထားပါသည်။ OpenVPN နှင့် နှိုင်းယှဉ်ပါက WireGuard သည် latency နည်းပါးပြီး ဒေတာလွှဲပြောင်းမှု ပိုမိုကောင်းမွန်ပါသည်။
 WireGuard သည် ၎င်း၏ ကွဲပြားသော packet လက်မှတ်များ ကြောင့် ပိတ်ဆို့ခြင်းကို အလွန်ခံရနိုင်ချေရှိသည်။ ရှုပ်ထွေးသောနည်းပညာများကို အသုံးပြုသည့် အခြားသော VPN ပရိုတိုကောများနှင့် မတူဘဲ၊ WireGuard ပက်ကတ်များ၏ တသမတ်တည်း လက်မှတ်ပုံစံများကြောင့် ၎င်းတို့ကိုပိုမိုလွယ်ကူစွာ ရှာဖွေဖော်ထုတ်နိုင်ကာ အဆင့်မြင့် Deep Packet Inspection (DPI) စနစ်များနှင့် အခြားသော ကွန်ရက်စောင့်ကြည့်ရေးကိရိယာများဖြင့် ပိတ်ဆို့ထားနိုင်သည်။
 
-* ပလက်ဖောင်းအားလုံးရှိ AmneziaVPN တွင်ရနိုင်ပါသည်။
+* ပလက်ဖောင်းအားလုံးရှိ CottonVPN တွင်ရနိုင်ပါသည်။
 * ပါဝါသုံးစွဲမှုနည်းပါးခြင်း။
 * ဆက်တင်အရေအတွက်နည်းပါခြင်း။
 * DPI ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များက အလွယ်တကူ ထောက်လှန်းသိရှိခံရနိုင်ပြီး ပိတ်ဆို့ခြင်းခံရနိုင်သည်။
@@ -4102,7 +4102,7 @@ Unlike older protocols such as VMess, VLESS, and the XTLS-Vision transport, REAL
 One of its distinguishing features is its ability to swiftly switch between networks and devices, making it particularly adaptive in dynamic network environments. 
 While it offers a blend of security, stability, and speed, it&apos;s essential to note that IKEv2 can be easily detected and is susceptible to blocking.
 
-* Available in the AmneziaVPN only on Windows
+* Available in the CottonVPN only on Windows
 * Low power consumption, on mobile devices
 * Minimal configuration
 * Recognised by DPI analysis systems
@@ -4111,7 +4111,7 @@ While it offers a blend of security, stability, and speed, it&apos;s essential t
 ၎င်း၏ထူးခြားသောအင်္ဂါရပ်များထဲမှတစ်ခုမှာ ကွန်ရက်များနှင့် စက်ပစ္စည်းများကြား လျင်မြန်စွာပြောင်းလဲနိုင်သည့်စွမ်းရည်ဖြစ်ပြီး ဤစွမ်းရည်ကပင် dynamic ဖြစ်သောကွန်ရက်ပတ်ဝန်းကျင်များတွင် လိုက်လျောညီထွေဖြစ်စေရန်အကူအညီပေးပါသည်။
 IKEv2 သည် လုံခြုံရေး၊ တည်ငြိမ်မှု၊ နှင့် အမြန်နှုန်းတို့ ပေးစွမ်းနိုင်သော်လည်း၊ အလွယ်တကူ ထောက်လှန်းသိရှိခံရနိုင်ပြီး ပိတ်ဆို့ခြင်း ခံရနိုင်သည်ကို သတိပြုရန် အရေးကြီးပါသည်။
 
-* Windows တွင်ရှိသော AmneziaVPN တွင်သာရနိုင်သည်။
+* Windows တွင်ရှိသော CottonVPN တွင်သာရနိုင်သည်။
 * မိုဘိုင်းစက်ပစ္စည်းများတွင် ပါဝါသုံးစွဲမှုနည်းပါးခြင်း။
 * တပ်ဆင်ချိန်ညှိရန်သိပ်မလိုအပ်ခြင်း။
 * DPI ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များမှထောက်လှန်းနိုင်ခြင်း။
@@ -4135,8 +4135,8 @@ IKEv2 သည် လုံခြုံရေး၊ တည်ငြိမ်မှ
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="102"/>
-        <source>AmneziaDNS</source>
-        <translation>AmneziaDNS</translation>
+        <source>DNS</source>
+        <translation>DNS</translation>
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="110"/>
@@ -4160,7 +4160,7 @@ IKEv2 သည် လုံခြုံရေး၊ တည်ငြိမ်မှ
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="121"/>
-        <source>AmneziaWG is a special protocol from Amnezia based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <source>WireGuard is a special protocol from CottonVPN based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4173,7 +4173,7 @@ IKEv2 သည် လုံခြုံရေး၊ တည်ငြိမ်မှ
         <source>OpenVPN stands as one of the most popular and time-tested VPN protocols available.
 It employs its unique security protocol, leveraging the strength of SSL/TLS for encryption and key exchange. Furthermore, OpenVPN&apos;s support for a multitude of authentication methods makes it versatile and adaptable, catering to a wide range of devices and operating systems. Due to its open-source nature, OpenVPN benefits from extensive scrutiny by the global community, which continually reinforces its security. With a strong balance of performance, security, and compatibility, OpenVPN remains a top choice for privacy-conscious individuals and businesses alike.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Normal power consumption on mobile devices
 * Flexible customisation to suit user needs to work with different operating systems and devices
 * Recognised by DPI systems and therefore susceptible to blocking
@@ -4192,7 +4192,7 @@ Cloak can modify packet metadata so that it completely masks VPN traffic as norm
 
 Immediately after receiving the first data packet, Cloak authenticates the incoming connection. If authentication fails, the plugin masks the server as a fake website and your VPN becomes invisible to analysis systems.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * High power consumption on mobile devices
 * Flexible settings
 * Not recognised by detection systems
@@ -4206,7 +4206,7 @@ Immediately after receiving the first data packet, Cloak authenticates the incom
 WireGuard provides stable VPN connection and high performance on all devices. It uses hard-coded encryption settings. WireGuard compared to OpenVPN has lower latency and better data transfer throughput.
 WireGuard is very susceptible to detection and blocking due to its distinct packet signatures. Unlike some other VPN protocols that employ obfuscation techniques, the consistent signature patterns of WireGuard packets can be more easily identified and thus blocked by advanced Deep Packet Inspection (DPI) systems and other network monitoring tools.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Low power consumption
 * Minimum number of settings
 * Easily recognised by DPI analysis systems, susceptible to blocking
@@ -4215,11 +4215,11 @@ WireGuard is very susceptible to detection and blocking due to its distinct pack
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="198"/>
-        <source>A modern iteration of the popular VPN protocol, AmneziaWG builds upon the foundation set by WireGuard, retaining its simplified architecture and high-performance capabilities across devices.
-While WireGuard is known for its efficiency, it had issues with being easily detected due to its distinct packet signatures. AmneziaWG solves this problem by using better obfuscation methods, making its traffic blend in with regular internet traffic.
-This means that AmneziaWG keeps the fast performance of the original while adding an extra layer of stealth, making it a great choice for those wanting a fast and discreet VPN connection.
+        <source>A modern iteration of the popular VPN protocol, WireGuard builds upon the foundation set by WireGuard, retaining its simplified architecture and high-performance capabilities across devices.
+While WireGuard is known for its efficiency, it had issues with being easily detected due to its distinct packet signatures. WireGuard solves this problem by using better obfuscation methods, making its traffic blend in with regular internet traffic.
+This means that WireGuard keeps the fast performance of the original while adding an extra layer of stealth, making it a great choice for those wanting a fast and discreet VPN connection.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Low power consumption
 * Minimum number of settings
 * Not recognised by traffic analysis systems
@@ -4239,8 +4239,8 @@ Unlike older protocols such as VMess, VLESS, and the XTLS-Vision transport, REAL
         <translation type="vanished">WireGuard - မြင့်မားသောစွမ်းဆောင်ရည်၊ မြန်နှုန်းမြင့်နှင့် ပါဝါသုံးစွဲမှုနည်းသော လူကြိုက်များသော VPN ပရိုတိုကောအသစ်. ဆင်ဆာဖြတ်မှုအဆင့်နိမ့်သော ဒေသများတွင်အသုံးပြုရန်အကြံပြုထားသည်.</translation>
     </message>
     <message>
-        <source>AmneziaWG - Special protocol from Amnezia, based on WireGuard. It&apos;s fast like WireGuard, but very resistant to blockages. Recommended for regions with high levels of censorship.</source>
-        <translation type="vanished">AmneziaWG - WireGuard ကိုအခြေခံထားသော Amnezia မှ အထူးပရိုတိုကော. ၎င်းသည် WireGuard ကဲ့သို့မြန်ဆန်သော်ပြီး ပိတ်ဆို့ခြင်းများကိုလည်း ခံနိုင်ရည်ရှိပါသည်. ဆင်ဆာဖြတ်တောက်မှု မြင့်မားသော ဒေသများတွင်အသုံးပြုရန် အကြံပြုပါသည်.</translation>
+        <source>WireGuard - Special protocol from CottonVPN, based on WireGuard. It&apos;s fast like WireGuard, but very resistant to blockages. Recommended for regions with high levels of censorship.</source>
+        <translation type="vanished">WireGuard - WireGuard ကိုအခြေခံထားသော CottonVPN မှ အထူးပရိုတိုကော. ၎င်းသည် WireGuard ကဲ့သို့မြန်ဆန်သော်ပြီး ပိတ်ဆို့ခြင်းများကိုလည်း ခံနိုင်ရည်ရှိပါသည်. ဆင်ဆာဖြတ်တောက်မှု မြင့်မားသော ဒေသများတွင်အသုံးပြုရန် အကြံပြုပါသည်.</translation>
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="130"/>
@@ -4256,7 +4256,7 @@ Unlike older protocols such as VMess, VLESS, and the XTLS-Vision transport, REAL
         <source>OpenVPN stands as one of the most popular and time-tested VPN protocols available.
 It employs its unique security protocol, leveraging the strength of SSL/TLS for encryption and key exchange. Furthermore, OpenVPN&apos;s support for a multitude of authentication methods makes it versatile and adaptable, catering to a wide range of devices and operating systems. Due to its open-source nature, OpenVPN benefits from extensive scrutiny by the global community, which continually reinforces its security. With a strong balance of performance, security, and compatibility, OpenVPN remains a top choice for privacy-conscious individuals and businesses alike.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Normal power consumption on mobile devices
 * Flexible customisation to suit user needs to work with different operating systems and devices
 * Recognised by DPI analysis systems and therefore susceptible to blocking
@@ -4264,7 +4264,7 @@ It employs its unique security protocol, leveraging the strength of SSL/TLS for 
         <translation type="vanished">OpenVPN သည်ပေါ်ပြူလာအဖြစ်ဆုံးနှင့် ကာလရှည်ကြာအသုံးဝင်ခဲ့ အသုံးဝင်နေစဲဖြစ်သော VPN ပရိုတိုကောများထဲမှတစ်ခုဖြစ်သည်။
 ကုဒ်ဝှက်ခြင်းနှင့် key လဲလှယ်ခြင်းအတွက် SSL/TLS ၏ ခွန်အားကို အသုံးချခြင်းဖြင့် OpenVPN သည် ၎င်း၏ထူးခြားသော လုံခြုံရေးပရိုတိုကောကို အသုံးပြုထားသည်။ ထို့အပြင် OpenVPN ၏ အထောက်အထားစိစစ်ခြင်းနည်းလမ်းများစွာအတွက်အထောက်အပံ့ပေးထားမှုသည် ၎င်းကို စွယ်စုံရလိုက်လျောညီထွေဖြစ်စေပြီး စက်ပစ္စည်းများနှင့် လည်ပတ်မှုစနစ်များစွာကို အထောက်အပံ့ပေးစေပါသည်။ ၎င်း၏ open-source သဘောသဘာဝကြောင့် OpenVPN သည် ၎င်းကို ကျယ်ကျယ်ပြန့်ပြန့် စိစစ်စောင့်ကြည့်ပေးသည့် global community ကြောင့် လုံခြုံရေးပိုမိုကောင်းမွန်လာသည့်အကျိုးကျေးဇူးများ ရရှိခဲ့သည်။ စွမ်းဆောင်ရည်၊ လုံခြုံရေးနှင့် မည်သည့်စက်ပစ္စည်းနှင့်မဆိုလိုက်လျှောညီထွေရှိမှုဂုဏ်သတ္တိတို့ကို မျှတစွာပိုင်ဆိုင်ထားသော OpenVPN သည် ကိုယ်ရေးကိုယ်တာလုံခြုံမှုကိုအထူးဂရုစိုက်သော ပုဂ္ဂိုလ်များနှင့် စီးပွားရေးလုပ်ငန်းများအတွက် ထိပ်တန်းရွေးချယ်မှုတစ်ခုအဖြစ် ရပ်တည်နေစဲဖြစ်ပါသည်။
 
-* ပလက်ဖောင်းအားလုံးရှိ AmneziaVPN တွင်အသုံးပြုနိုင်သည်။
+* ပလက်ဖောင်းအားလုံးရှိ CottonVPN တွင်အသုံးပြုနိုင်သည်။
 * မိုဘိုင်းစက်ပစ္စည်းများတွင် ပုံမှန်ပါဝါသုံးစွဲမှုရှိခြင်း။
 * မတူညီသော operating system များ၊ စက်ပစ္စည်းများနှင့်အလုပ်လုပ်သော အသုံးပြုသူများအတွက် လိုအပ်ချက်များနှင့်ကိုက်ညီရန်  လိုသလိုချိန်ညှိနိုင်ခြင်း။
 * DPI ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များကထောက်လှန်းနိုင်သောကြောင့် ပိတ်ဆို့ခြင်းခံရနိုင်သည်။
@@ -4272,34 +4272,34 @@ It employs its unique security protocol, leveraging the strength of SSL/TLS for 
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="159"/>
-        <source>Shadowsocks, inspired by the SOCKS5 protocol, safeguards the connection using the AEAD cipher. Although Shadowsocks is designed to be discreet and challenging to identify, it isn&apos;t identical to a standard HTTPS connection.However, certain traffic analysis systems might still detect a Shadowsocks connection. Due to limited support in Amnezia, it&apos;s recommended to use AmneziaWG protocol.
+        <source>Shadowsocks, inspired by the SOCKS5 protocol, safeguards the connection using the AEAD cipher. Although Shadowsocks is designed to be discreet and challenging to identify, it isn&apos;t identical to a standard HTTPS connection.However, certain traffic analysis systems might still detect a Shadowsocks connection. Due to limited support in CottonVPN, it&apos;s recommended to use WireGuard protocol.
 
-* Available in the AmneziaVPN only on desktop platforms
+* Available in the CottonVPN only on desktop platforms
 * Configurable encryption protocol
 * Detectable by some DPI systems
 * Works over TCP network protocol.</source>
-        <translation>SOCKS5 ပရိုတိုကောကို အတုယူအခြေခံတည်ဆောက်ထားသော Shadowsocks သည် AEAD cipher ကိုအသုံးပြု၍ ချိတ်ဆက်မှုကိုကာကွယ်ပေးသည်။ Shadowsocks သည် ထောက်လှန်းသိရှိခံရခြင်းမှရှောင်ရှားနိုင်ရန်နှင့် ထောက်လှန်းသည့်သူများခက်ခဲစေရန် ဒီဇိုင်းထုတ်ထားသော်လည်း စံသတ်မှတ်ထားသည့် HTTPS ချိတ်ဆက်မှုနှင့် ထပ်တူမကျပါ။ သို့သော်၊ အချို့သောလမ်းကြောင်းဆိုင်ရာ ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များသည် Shadowsocks ချိတ်ဆက်မှုကို ရှာဖွေတွေ့ရှိနိုင်သေးသည်။ Amnezia တွင် ထောက်ပံ့မှုအကန့်အသတ်ရှိသောကြောင့် AmneziaWG ပရိုတိုကောကို အသုံးပြုရန် အကြံပြုထားသည်။
+        <translation>SOCKS5 ပရိုတိုကောကို အတုယူအခြေခံတည်ဆောက်ထားသော Shadowsocks သည် AEAD cipher ကိုအသုံးပြု၍ ချိတ်ဆက်မှုကိုကာကွယ်ပေးသည်။ Shadowsocks သည် ထောက်လှန်းသိရှိခံရခြင်းမှရှောင်ရှားနိုင်ရန်နှင့် ထောက်လှန်းသည့်သူများခက်ခဲစေရန် ဒီဇိုင်းထုတ်ထားသော်လည်း စံသတ်မှတ်ထားသည့် HTTPS ချိတ်ဆက်မှုနှင့် ထပ်တူမကျပါ။ သို့သော်၊ အချို့သောလမ်းကြောင်းဆိုင်ရာ ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များသည် Shadowsocks ချိတ်ဆက်မှုကို ရှာဖွေတွေ့ရှိနိုင်သေးသည်။ CottonVPN တွင် ထောက်ပံ့မှုအကန့်အသတ်ရှိသောကြောင့် WireGuard ပရိုတိုကောကို အသုံးပြုရန် အကြံပြုထားသည်။
 
-* Desktop ပလပ်ဖောင်းများတွင်ရှိ‌သော AmneziaVPN တွင်သာအသုံးပြုနိုင်ပါသည်။
+* Desktop ပလပ်ဖောင်းများတွင်ရှိ‌သော CottonVPN တွင်သာအသုံးပြုနိုင်ပါသည်။
 * ပြင်ဆင်သတ်မှတ်နိုင်သော စာဝှက်စနစ် ပရိုတိုကော
 * အချို့သော DPI စနစ်များဖြင့် ထောက်လှန်းသိရှိနိုင်သည်။
 * TCP ကွန်ရက် ပရိုတိုကောပေါ်တွင် အလုပ်လုပ်သည်။.</translation>
     </message>
     <message>
-        <source>A modern iteration of the popular VPN protocol, AmneziaWG builds upon the foundation set by WireGuard, retaining its simplified architecture and high-performance capabilities across devices.
-While WireGuard is known for its efficiency, it had issues with being easily detected due to its distinct packet signatures. AmneziaWG solves this problem by using better obfuscation methods, making its traffic blend in with regular internet traffic.
-This means that AmneziaWG keeps the fast performance of the original while adding an extra layer of stealth, making it a great choice for those wanting a fast and discreet VPN connection.
+        <source>A modern iteration of the popular VPN protocol, WireGuard builds upon the foundation set by WireGuard, retaining its simplified architecture and high-performance capabilities across devices.
+While WireGuard is known for its efficiency, it had issues with being easily detected due to its distinct packet signatures. WireGuard solves this problem by using better obfuscation methods, making its traffic blend in with regular internet traffic.
+This means that WireGuard keeps the fast performance of the original while adding an extra layer of stealth, making it a great choice for those wanting a fast and discreet VPN connection.
 
-* Available in the AmneziaVPN across all platforms
+* Available in the CottonVPN across all platforms
 * Low power consumption
 * Minimum number of settings
 * Not recognised by DPI analysis systems, resistant to blocking
 * Works over UDP network protocol.</source>
-        <translation type="vanished">လူကြိုက်များသော VPN ပရိုတိုကော၏ ခေတ်မီပြန်လည်တည်ဆောက်မှုတစ်ခုဖြစ်သော AmneziaWG သည် WireGuard မှသတ်မှတ်ထားသော အခြေခံအုတ်မြစ်ပေါ်တွင် တည်ဆောက်ထားပြီး ၎င်း၏ရိုးရှင်းသောတည်ဆောက်ပုံနှင့် စွမ်းဆောင်ရည်မြင့်မားသောစွမ်းရည်များကို ဆက်လက်ထိန်းသိမ်းထားပါသည်။
-WireGuard သည် ၎င်း၏ စွမ်းဆောင်ရည်အတွက် လူသိများသော်လည်း ၎င်း၏ ထူးခြားသော packet လက်မှတ်များ ကြောင့် အလွယ်တကူ ထောက်လှန်းရှာဖွေတွေ့ရှိနိုင်သည့် ပြဿနာများ ရှိခဲ့ပါသည်။ AmneziaWG သည် ၎င်း၏ အသွားအလာကို ပုံမှန်အင်တာနက်အသွားအလာနှင့် ရောနှောကာ ပိုမိုကောင်းမွန်သော ရှုပ်ထွေးသော နည်းလမ်းများကို အသုံးပြုခြင်းဖြင့် ဤပြဿနာကို ဖြေရှင်းပေးထားပါသည်။
-ဆိုလိုသည်မှာ AmneziaWG သည် နောက်ထပ်ထောက်လှန်းရခက်စေသည့်အလွှာတစ်ခုထပ်ထည့်စဉ်တွင် မူရင်းမြန်ဆန်သောစွမ်းဆောင်ရည်ကို ထိန်းသိမ်းထားနိုင်သောကြောင့် မြန်ဆန်ပြီးပါးနပ်သော VPN ချိတ်ဆက်မှုကိုလိုချင်သူများအတွက် အကောင်းဆုံးရွေးချယ်မှုတစ်ခုဖြစ်ပါသည်။
+        <translation type="vanished">လူကြိုက်များသော VPN ပရိုတိုကော၏ ခေတ်မီပြန်လည်တည်ဆောက်မှုတစ်ခုဖြစ်သော WireGuard သည် WireGuard မှသတ်မှတ်ထားသော အခြေခံအုတ်မြစ်ပေါ်တွင် တည်ဆောက်ထားပြီး ၎င်း၏ရိုးရှင်းသောတည်ဆောက်ပုံနှင့် စွမ်းဆောင်ရည်မြင့်မားသောစွမ်းရည်များကို ဆက်လက်ထိန်းသိမ်းထားပါသည်။
+WireGuard သည် ၎င်း၏ စွမ်းဆောင်ရည်အတွက် လူသိများသော်လည်း ၎င်း၏ ထူးခြားသော packet လက်မှတ်များ ကြောင့် အလွယ်တကူ ထောက်လှန်းရှာဖွေတွေ့ရှိနိုင်သည့် ပြဿနာများ ရှိခဲ့ပါသည်။ WireGuard သည် ၎င်း၏ အသွားအလာကို ပုံမှန်အင်တာနက်အသွားအလာနှင့် ရောနှောကာ ပိုမိုကောင်းမွန်သော ရှုပ်ထွေးသော နည်းလမ်းများကို အသုံးပြုခြင်းဖြင့် ဤပြဿနာကို ဖြေရှင်းပေးထားပါသည်။
+ဆိုလိုသည်မှာ WireGuard သည် နောက်ထပ်ထောက်လှန်းရခက်စေသည့်အလွှာတစ်ခုထပ်ထည့်စဉ်တွင် မူရင်းမြန်ဆန်သောစွမ်းဆောင်ရည်ကို ထိန်းသိမ်းထားနိုင်သောကြောင့် မြန်ဆန်ပြီးပါးနပ်သော VPN ချိတ်ဆက်မှုကိုလိုချင်သူများအတွက် အကောင်းဆုံးရွေးချယ်မှုတစ်ခုဖြစ်ပါသည်။
 
-* ပလက်ဖောင်းအားလုံးရှိ AmneziaVPN တွင်ရနိုင်သည်။
+* ပလက်ဖောင်းအားလုံးရှိ CottonVPN တွင်ရနိုင်သည်။
 * ပါဝါသုံးစွဲမှုနည်းပါးခြင်း။
 * ဆက်တင်အရေအတွက်နည်းပါခြင်း။ (အလုပ်ရှုပ်သက်သာ)
 * DPI ခွဲခြမ်းစိတ်ဖြာမှုစနစ်များက ထောက်လှန်းမှုမပြုနိုင်ဘဲ ပိတ်ဆို့ခြင်းကိုခံနိုင်ရည်ရှိသည်။
@@ -4307,7 +4307,7 @@ WireGuard သည် ၎င်း၏ စွမ်းဆောင်ရည်အ�
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="239"/>
-        <source>After installation, Amnezia will create a
+        <source>After installation, CottonVPN will create a
 
  file storage on your server. You will be able to access it using
  FileZilla or other SFTP clients, as well as mount the disk on your device to access
@@ -4315,7 +4315,7 @@ WireGuard သည် ၎င်း၏ စွမ်းဆောင်ရည်အ�
 
 For more detailed information, you can
  find it in the support section under &quot;Create SFTP file storage.&quot; </source>
-        <translation>တပ်ဆင်ပြီးနောက်၊ Amnezia သည် ဖန်တီးပေးလိမ့်မည်။
+        <translation>တပ်ဆင်ပြီးနောက်၊ CottonVPN သည် ဖန်တီးပေးလိမ့်မည်။
 
  သင့်ဆာဗာတွင် ဖိုင်သိုလှောင်မှု။ ၎င်းကို အသုံးပြု၍ သင်ဝင်ရောက်နိုင်မည်ဖြစ်သည်။
  FileZilla သို့မဟုတ် အခြား SFTP ဖောက်သည်များအပြင် ဝင်ရောက်ကြည့်ရှုရန် သင့်စက်ပေါ်တွင် ဒစ်ကို တပ်ဆင်ပါ။
@@ -4584,8 +4584,8 @@ For more detailed information, you can
     <message>
         <location filename="../ui/qml/Components/ShareConnectionDrawer.qml" line="30"/>
         <location filename="../ui/qml/Components/ShareConnectionDrawer.qml" line="37"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaWG config ကိုသိမ်းဆည်းမည်</translation>
+        <source>Save CottonVPN config</source>
+        <translation>WireGuard config ကိုသိမ်းဆည်းမည်</translation>
     </message>
     <message>
         <location filename="../ui/qml/Components/ShareConnectionDrawer.qml" line="25"/>
@@ -4615,8 +4615,8 @@ For more detailed information, you can
     </message>
     <message>
         <location filename="../ui/qml/Components/ShareConnectionDrawer.qml" line="370"/>
-        <source>To read the QR code in the Amnezia app, select &quot;Add server&quot; → &quot;I have data to connect&quot; → &quot;QR code, key or settings file&quot;</source>
-        <translation>Amnezia အက်ပ်ရှိ QR ကုဒ်ကိုဖတ်ရန်အတွက်အောက်ပါအတိုင်း ရွေးချယ်ပါ &quot;ဆာဗာထည့်ရန်&quot; → &quot;ချိတ်ဆက်ရန် ဒေတာရှိသည်&quot; → &quot;QR ကုဒ်၊ key သို့မဟုတ် ဆက်တင်ဖိုင်&quot;</translation>
+        <source>To read the QR code in the CottonVPN app, select &quot;Add server&quot; → &quot;I have data to connect&quot; → &quot;QR code, key or settings file&quot;</source>
+        <translation>CottonVPN အက်ပ်ရှိ QR ကုဒ်ကိုဖတ်ရန်အတွက်အောက်ပါအတိုင်း ရွေးချယ်ပါ &quot;ဆာဗာထည့်ရန်&quot; → &quot;ချိတ်ဆက်ရန် ဒေတာရှိသည်&quot; → &quot;QR ကုဒ်၊ key သို့မဟုတ် ဆက်တင်ဖိုင်&quot;</translation>
     </message>
 </context>
 <context>
@@ -4779,7 +4779,7 @@ For more detailed information, you can
     </message>
     <message>
         <location filename="../containers/containers_defs.cpp" line="346"/>
-        <source>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <source>WireGuard protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

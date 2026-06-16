@@ -60,8 +60,8 @@ PageType {
         function onServerIsBusy(isBusy) {
             if (isBusy) {
                 root.isCancelButtonVisible = true
-                root.progressBarText = qsTr("Amnezia has detected that your server is currently ") +
-                                       qsTr("busy installing other software. Amnezia installation ") +
+                root.progressBarText = qsTr("CottonVPN has detected that your server is currently ") +
+                                       qsTr("busy installing other software. CottonVPN installation ") +
                                        qsTr("will pause until the server finishes installing other software")
                 root.isTimerRunning = false
             } else {

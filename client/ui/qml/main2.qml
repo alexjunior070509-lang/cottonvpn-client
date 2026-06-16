@@ -73,7 +73,7 @@ Window  {
         console.warn("Scene graph error:", error, message)
     }
 
-    title: "AmneziaVPN"
+    title: "CottonVPN"
 
     Item { // This item is needed for focus handling
         id: defaultFocusItem
@@ -392,7 +392,7 @@ Window  {
 
     function showUnsupportedConnectDrawer() {
         let headerText = qsTr("This subscription format is no longer supported")
-        let descriptionText = qsTr("This legacy Amnezia subscription type can no longer be used to connect in this application version.\nRemove the server from the app to continue.")
+        let descriptionText = qsTr("This legacy CottonVPN subscription type can no longer be used to connect in this application version.\nRemove the server from the app to continue.")
         let yesButtonText = qsTr("Continue")
         let noButtonText = qsTr("Cancel")
 
