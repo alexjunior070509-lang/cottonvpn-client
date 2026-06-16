@@ -24,8 +24,8 @@ PageType {
         target: PageController
 
         function onGoToPageHome() {
-            // CottonVPN: всегда главный экран (большая кнопка + поле ключа), без setup-визарда
-            tabBar.visible = true
+            // CottonVPN: всегда главный экран (большая кнопка + поле ключа), без вкладок и setup-визарда
+            tabBar.visible = false
             tabBar.setCurrentIndex(0)
             tabBarStackView.goToTabBarPage(PageEnum.PageHome)
         }
@@ -276,8 +276,8 @@ PageType {
         }
 
         Component.onCompleted: {
-            // CottonVPN: стартуем сразу на главном экране (кнопка + поле ключа)
-            tabBar.visible = true
+            // CottonVPN: стартуем сразу на главном экране (кнопка + поле ключа), без вкладок
+            tabBar.visible = false
             var pagePath = PageController.getPagePath(PageEnum.PageHome)
             if (ServersUiController.getServersCount() > 0) {
                 ServersUiController.setProcessedServerId(ServersUiController.defaultServerId)
