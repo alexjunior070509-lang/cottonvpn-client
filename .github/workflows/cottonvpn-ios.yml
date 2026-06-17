@@ -1,0 +1,103 @@
+name: CottonVPN iOS (TestFlight)
+
+# ЧЕРНОВИК-КАРКАС. Запуск только вручную — заработает после настройки Apple Developer
+# и добавления секретов (см. docs/ios/SETUP.md). Первая реальная сборка, скорее всего,
+# потребует 1–2 итераций по логам — это нормально для первого iOS-пайплайна.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      QT_VERSION: "6.10.3"
+      QT_MODULES: "qtremoteobjects qt5compat qtimageformats qtshadertools"
+      # Идентификаторы/подпись (Team ID и пароль серта — из секретов)
+      BUILD_VPN_DEVELOPMENT_TEAM: ${{ secrets.APPLE_TEAM_ID }}
+      BUILD_IOS_PROFILE_DISTR: "CottonVPN App Store"
+      BUILD_IOS_PROFILE_DEV: "CottonVPN Dev"
+      BUILD_IOS_NE_PROFILE_DISTR: "CottonVPN NE App Store"
+      BUILD_IOS_NE_PROFILE_DEV: "CottonVPN NE Dev"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: Install host (macOS) Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.10.3"
+          host: mac
+          target: desktop
+          arch: clang_64
+          modules: ${{ env.QT_MODULES }}
+          dir: ${{ runner.temp }}
+          py7zrversion: "==0.22.*"
+
+      - name: Install iOS Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.10.3"
+          host: mac
+          target: ios
+          modules: ${{ env.QT_MODULES }}
+          dir: ${{ runner.temp }}
+          py7zrversion: "==0.22.*"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install conan
+        run: |
+          pip install "conan==2.28.0"
+          conan profile detect --force
+
+      - name: Import signing certificate + profiles
+        env:
+          DIST_CERT_P12_B64: ${{ secrets.IOS_DIST_CERT_P12_B64 }}
+          CERT_PASSWORD: ${{ secrets.IOS_CERT_PASSWORD }}
+          PROFILE_APP_B64: ${{ secrets.IOS_PROFILE_APP_B64 }}
+          PROFILE_NE_B64: ${{ secrets.IOS_PROFILE_NE_B64 }}
+        run: |
+          set -e
+          KEYCHAIN=$RUNNER_TEMP/cottonvpn.keychain-db
+          KP=$(openssl rand -base64 16)
+          security create-keychain -p "$KP" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KP" "$KEYCHAIN"
+          echo "$DIST_CERT_P12_B64" | base64 -d > "$RUNNER_TEMP/dist.p12"
+          security import "$RUNNER_TEMP/dist.p12" -P "$CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security list-keychain -d user -s "$KEYCHAIN" $(security list-keychains -d user | sed s/\"//g)
+          security set-key-partition-list -S apple-tool:,apple: -k "$KP" "$KEYCHAIN" >/dev/null
+          # provisioning profiles
+          PROF_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROF_DIR"
+          echo "$PROFILE_APP_B64" | base64 -d > "$PROF_DIR/cottonvpn-app.mobileprovision"
+          echo "$PROFILE_NE_B64"  | base64 -d > "$PROF_DIR/cottonvpn-ne.mobileprovision"
+
+      - name: Build iOS (archive, signed)
+        env:
+          QT_INSTALL_DIR: ${{ runner.temp }}
+        run: |
+          chmod +x deploy/build.sh
+          deploy/build.sh -t ios
+
+      - name: Collect artifact (.app / .xcarchive)
+        run: |
+          mkdir -p out
+          find deploy/build -name "*.app" -maxdepth 6 -print | head -1 || true
+          # TODO(после первой сборки): xcodebuild -exportArchive с ExportOptions.plist → .ipa
+          # затем аплоад в TestFlight через App Store Connect API key:
+          #   xcrun altool --upload-app -f CottonVPN.ipa -t ios \
+          #     --apiKey $ASC_KEY_ID --apiIssuer $ASC_ISSUER_ID
+          ls -la deploy/build || true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cottonvpn-ios-build
+          path: deploy/build/**/*.app
+          if-no-files-found: warn

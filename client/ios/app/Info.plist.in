@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${QT_INTERNAL_DOLLAR_VAR}{PRODUCT_NAME}</string>
+	<string>CottonVPN</string>
 	<key>CFBundleExecutable</key>
 	<string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -70,11 +70,11 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>com.wireguard.ios.app_group_id</key>
-	<string>group.org.amnezia.AmneziaVPN</string>
+	<string>group.com.cottonvpn.app</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Amnezia VPN needs access to the camera for reading QR-codes.</string>
+	<string>CottonVPN needs access to the camera for reading QR-codes.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
