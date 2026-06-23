@@ -35,6 +35,10 @@ public slots:
     void openConnection();
     void closeConnection();
 
+    // CottonVPN: пере-синхронизация статуса с живым VPN-сервисом (вызывается при возврате
+    // приложения на передний план — чинит «кнопка ВЫКЛ, а туннель работает»)
+    void checkConnectionState();
+
     bool isRevokeBlockedDuringActiveConnection(const QString &serverId, int containerIndex, const QString &clientId) const;
 
     ErrorCode getLastConnectionError();

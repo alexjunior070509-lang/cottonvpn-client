@@ -45,6 +45,15 @@ void ConnectionUiController::closeConnection()
     m_connectionController->closeConnection();
 }
 
+void ConnectionUiController::checkConnectionState()
+{
+#ifdef Q_OS_ANDROID
+    // Перезапрашиваем реальный статус у VPN-сервиса (туннель живёт в отдельном процессе) —
+    // синхронизируем индикатор, если UI-процесс был выгружен и показывает неверное состояние.
+    m_connectionController->restoreConnection();
+#endif
+}
+
 ErrorCode ConnectionUiController::getLastConnectionError()
 {
     return m_connectionController->lastConnectionError();

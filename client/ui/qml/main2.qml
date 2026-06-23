@@ -23,6 +23,8 @@ Window  {
                 if (Qt.application.state === Qt.ApplicationActive) {
                     root.visible = true
                     refreshTimer.restart()
+                    // CottonVPN: пере-синк статуса с VPN-сервисом — чинит «кнопка ВЫКЛ, а VPN работает»
+                    ConnectionController.checkConnectionState()
                 }
             }
         }
