@@ -220,10 +220,15 @@ open class Wireguard : Protocol() {
     override fun stopVpn() {
         if (tunnelHandle == -1) {
             Log.w(TAG, "Tunnel already down")
+            // CottonVPN: всё равно рапортуем DISCONNECTED, иначе сервис впустую ждёт
+            // DISCONNECT_TIMEOUT (5с) — это и было «очень долгое отключение».
+            state.value = DISCONNECTED
             return
         }
-        turnOffVpn()
+        // CottonVPN: сразу выставляем DISCONNECTED, затем рвём туннель — чтобы индикатор
+        // не висел в «Отключение» весь теардаун Go-движка (awgTurnOff может подвисать).
         state.value = DISCONNECTED
+        turnOffVpn()
     }
 
     override fun reconnectVpn(vpnBuilder: Builder, protect: (Int) -> Boolean) {
