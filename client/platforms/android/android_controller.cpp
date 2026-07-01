@@ -36,8 +36,11 @@ AndroidController::AndroidController() : QObject()
         this, &AndroidController::serviceDisconnected, this,
         [this]() {
             qDebug() << "Android event: service disconnected";
+            // CottonVPN: потеря привязки к сервису (напр. при сворачивании приложения) — это НЕ
+            // разрыв VPN: туннель живёт в отдельном процессе. НЕ сбрасываем кнопку в Disconnected,
+            // иначе она гаснет на каждое сворачивание. Реальный статус перезапросится при возврате
+            // (onStart → REQUEST_STATUS → initConnectionState). isWaitingStatus=true это включает.
             isWaitingStatus = true;
-            emit connectionStateChanged(Vpn::ConnectionState::Disconnected);
         },
         Qt::QueuedConnection);
 
