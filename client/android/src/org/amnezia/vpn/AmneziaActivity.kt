@@ -266,10 +266,12 @@ class AmneziaActivity : QtActivity() {
         Log.d(TAG, "Start Amnezia activity")
         mainScope.launch {
             qtInitialized.await()
-            vpnProto?.let { proto ->
-                if (AmneziaVpnService.isRunning(applicationContext, proto.processName)) {
-                    doBindService()
-                }
+            // CottonVPN: биндимся всегда (не полагаемся на isRunning — для отдельного процесса
+            // сервиса он ненадёжен на новых Android). bindService без AUTO_CREATE подключится
+            // только к живому сервису → REQUEST_STATUS вернёт реальный статус и обновит кнопку;
+            // если сервис не запущен — bind вернёт false, кнопка честно останется «Отключено».
+            if (vpnProto != null) {
+                doBindService()
             }
         }
     }
@@ -531,9 +533,11 @@ class AmneziaActivity : QtActivity() {
         Log.d(TAG, "Bind service")
         vpnProto?.let { proto ->
             Intent(this, proto.serviceClass).also {
-                bindService(it, serviceConnection, BIND_ABOVE_CLIENT and BIND_AUTO_CREATE)
+                // CottonVPN: сохраняем реальный результат bind (без AUTO_CREATE bind к
+                // незапущенному сервису вернёт false) — иначе отвязка потом упала бы с
+                // "Service not registered".
+                isInBoundState = bindService(it, serviceConnection, BIND_ABOVE_CLIENT and BIND_AUTO_CREATE)
             }
-            isInBoundState = true
         }
     }
 
