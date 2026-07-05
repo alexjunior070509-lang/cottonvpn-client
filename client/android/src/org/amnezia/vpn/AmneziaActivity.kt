@@ -272,6 +272,11 @@ class AmneziaActivity : QtActivity() {
             // если сервис не запущен — bind вернёт false, кнопка честно останется «Отключено».
             if (vpnProto != null) {
                 doBindService()
+                // Если сервис реально не запущен (bind не удался) — VPN выключен, ставим «Отключено».
+                // Если удался — onServiceConnected запросит статус и обновит на реальное состояние.
+                if (!isInBoundState) {
+                    QtAndroidController.onServiceDisconnected()
+                }
             }
         }
     }
@@ -284,10 +289,10 @@ class AmneziaActivity : QtActivity() {
         openFileDeliveryScheduled = false
         Log.d(TAG, "Stop Amnezia activity")
         doUnbindService()
-        mainScope.launch {
-            qtInitialized.await()
-            QtAndroidController.onServiceDisconnected()
-        }
+        // CottonVPN: НЕ сообщаем Qt «disconnected» при сворачивании — VPN продолжает работать
+        // в отдельном процессе, а кнопка иначе гасла на каждый выход из приложения. Реальный
+        // статус проверяется при возврате (onStart: bind + REQUEST_STATUS, либо disconnected
+        // если сервис не поднялся). Потеря туннеля в фоне придёт через vpnStateChanged при возврате.
         super.onStop()
     }
 
