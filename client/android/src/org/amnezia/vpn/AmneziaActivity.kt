@@ -113,10 +113,11 @@ class AmneziaActivity : QtActivity() {
                     }
 
                     ServiceEvent.STATUS -> {
-                        if (isWaitingStatus) {
-                            isWaitingStatus = false
-                            msg.data?.getStatus()?.let { QtAndroidController.onStatus(it) }
-                        }
+                        // CottonVPN: всегда пробрасываем ответ-статус в UI. Раньше гейт
+                        // if(isWaitingStatus) ронял ответ при возврате в приложение (флаг не
+                        // выставлялся при обычном сворачивании) → кнопка «застревала».
+                        isWaitingStatus = false
+                        msg.data?.getStatus()?.let { QtAndroidController.onStatus(it) }
                     }
 
                     ServiceEvent.STATISTICS_UPDATE -> {
