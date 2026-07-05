@@ -36,7 +36,13 @@ SettingsController::SettingsController(SecureServersRepository* serversRepositor
       m_serversRepository(serversRepository),
       m_appSettingsRepository(appSettingsRepository)
 {
-    m_appVersion = QString("%1 (%2, %3)").arg(QString(APP_VERSION), __DATE__, GIT_COMMIT_HASH);
+    // CottonVPN: показываем нашу версию релиза (1.0.N из CI), если задана; иначе — базовую.
+    const QString cottonVer = QStringLiteral(COTTON_RELEASE_VERSION);
+    if (!cottonVer.isEmpty()) {
+        m_appVersion = QString("CottonVPN %1").arg(cottonVer);
+    } else {
+        m_appVersion = QString("%1 (%2, %3)").arg(QString(APP_VERSION), __DATE__, GIT_COMMIT_HASH);
+    }
     m_isDevModeEnabled = m_appSettingsRepository->isDevGatewayEnv();
 }
 

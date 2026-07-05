@@ -22,6 +22,8 @@ execute_process(
 )
 
 add_definitions(-DGIT_COMMIT_HASH="${GIT_COMMIT_HASH}")
+# CottonVPN: версия релиза (1.0.N), задаётся в CI через env COTTON_RELEASE_VERSION
+add_definitions(-DCOTTON_RELEASE_VERSION="$ENV{COTTON_RELEASE_VERSION}")
 
 add_definitions(-DPROD_AGW_PUBLIC_KEY="$ENV{PROD_AGW_PUBLIC_KEY}")
 add_definitions(-DPROD_S3_ENDPOINT="$ENV{PROD_S3_ENDPOINT}")

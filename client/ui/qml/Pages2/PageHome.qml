@@ -206,5 +206,16 @@ PageType {
                 onClicked: root.editingKey = true
             }
         }
+
+        // версия приложения
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 4
+            text: SettingsController.getAppVersion()
+            color: root.cMuted
+            font.family: "PT Root UI VF"
+            font.pixelSize: 12
+            opacity: 0.7
+        }
     }
 }
