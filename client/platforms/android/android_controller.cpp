@@ -24,10 +24,15 @@ AndroidController::AndroidController() : QObject()
     connect(this, &AndroidController::status, this,
             [this](AndroidController::ConnectionState state) {
                 qDebug() << "Android event: status =" << textConnectionState(state);
+                // CottonVPN: ответ со статусом ВСЕГДА обновляет кнопку. Раньше гейт if(isWaitingStatus)
+                // ронял ответ при возврате в приложение → кнопка «застревала». Если ждём инициализацию —
+                // идём через initConnectionState (запускает restore-логику), иначе просто обновляем состояние.
                 if (isWaitingStatus) {
                     qDebug() << "Initialization by service status";
                     isWaitingStatus = false;
                     emit initConnectionState(convertState(state));
+                } else {
+                    emit connectionStateChanged(convertState(state));
                 }
             },
             Qt::QueuedConnection);
