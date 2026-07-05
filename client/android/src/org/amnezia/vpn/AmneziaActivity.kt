@@ -155,9 +155,9 @@ class AmneziaActivity : QtActivity() {
                     replyTo = activityMessenger
                 )
                 isServiceConnected = true
-                if (isWaitingStatus) {
-                    vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)
-                }
+                // CottonVPN: всегда запрашиваем реальный статус при подключении к сервису (в т.ч.
+                // при возврате в приложение) — иначе кнопка «застревала» в неверном состоянии.
+                vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
