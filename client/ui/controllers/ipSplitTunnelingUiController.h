@@ -29,6 +29,11 @@ public slots:
     int getRouteMode() const;
     bool isSplitTunnelingEnabled() const;
 
+    // CottonVPN: пресет «РУ напрямую» — исключить российские IP из VPN (идут напрямую)
+    void enableRussiaPreset();
+    void disableRussiaPreset();
+    bool isRussiaPresetEnabled() const;
+
     void updateModel();
 
 signals:

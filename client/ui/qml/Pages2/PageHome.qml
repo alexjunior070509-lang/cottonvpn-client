@@ -131,6 +131,61 @@ PageType {
             }
         }
 
+        // ===== тумблер «РУ напрямую» (раздельное туннелирование) =====
+        Rectangle {
+            visible: !root.showKeyField
+            Layout.fillWidth: true
+            Layout.topMargin: 18
+            radius: 16
+            color: root.cCard
+            border.color: root.cLine
+            border.width: 1
+            implicitHeight: ruRow.implicitHeight + 24
+
+            RowLayout {
+                id: ruRow
+                anchors.fill: parent
+                anchors.leftMargin: 16
+                anchors.rightMargin: 12
+                anchors.topMargin: 12
+                anchors.bottomMargin: 12
+                spacing: 8
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    spacing: 2
+                    Text {
+                        text: qsTr("🇷🇺 Российские сервисы напрямую")
+                        color: root.cInk
+                        font.family: "PT Root UI VF"
+                        font.weight: 600
+                        font.pixelSize: 15
+                    }
+                    Text {
+                        text: qsTr("Банки, Госуслуги и т.п. в обход VPN")
+                        color: root.cMuted
+                        font.family: "PT Root UI VF"
+                        font.pixelSize: 12
+                    }
+                }
+
+                Switch {
+                    id: ruSwitch
+                    checked: IpSplitTunnelingController.isRussiaPresetEnabled()
+                    onToggled: {
+                        if (checked) {
+                            IpSplitTunnelingController.enableRussiaPreset()
+                        } else {
+                            IpSplitTunnelingController.disableRussiaPreset()
+                        }
+                        if (ConnectionController.isConnected) {
+                            PageController.showNotificationMessage(qsTr("Изменение применится после переподключения VPN"))
+                        }
+                    }
+                }
+            }
+        }
+
         // ===== ключа нет: поле ввода =====
         ColumnLayout {
             Layout.fillWidth: true

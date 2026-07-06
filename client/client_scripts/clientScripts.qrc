@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/client_scripts">
         <file>mac_installer.sh</file>
+        <file>ru_ip.txt</file>
     </qresource>
 </RCC>

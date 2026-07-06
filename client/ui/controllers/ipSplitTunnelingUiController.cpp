@@ -1,6 +1,8 @@
 #include "ipSplitTunnelingUiController.h"
 
 #include <QDebug>
+#include <QFile>
+#include <QMap>
 
 #include "systemController.h"
 #include "core/utils/errorCodes.h"
@@ -89,4 +91,44 @@ bool IpSplitTunnelingUiController::isSplitTunnelingEnabled() const
 void IpSplitTunnelingUiController::updateModel()
 {
     m_ipSplitTunnelingModel->updateModel(m_ipSplitTunnelingController->getCurrentSites());
+}
+
+void IpSplitTunnelingUiController::enableRussiaPreset()
+{
+    // «всё через VPN, кроме списка» — список российских IP пойдёт напрямую
+    m_ipSplitTunnelingController->setRouteMode(amnezia::RouteMode::VpnAllExceptSites);
+
+    // встроенный список РУ-IP (CIDR с маской; vpnConnection принимает subnet-формат как есть)
+    QFile f(QStringLiteral(":/client_scripts/ru_ip.txt"));
+    QMap<QString, QString> sites;
+    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        while (!f.atEnd()) {
+            const QString line = QString::fromUtf8(f.readLine()).trimmed();
+            if (!line.isEmpty() && line.contains(QLatin1Char('/'))) {
+                sites.insert(line, line);
+            }
+        }
+        f.close();
+    }
+    if (!sites.isEmpty()) {
+        m_ipSplitTunnelingController->addSites(sites, true); // replaceExisting
+    }
+    m_ipSplitTunnelingController->toggleSplitTunneling(true);
+
+    // updateModel() намеренно не вызываем: список (8623 записи) на нашем экране не показывается,
+    // построение модели впустую подвесило бы UI при переключении тумблера.
+    emit routeModeChanged();
+    emit isSplitTunnelingEnabledChanged();
+}
+
+void IpSplitTunnelingUiController::disableRussiaPreset()
+{
+    m_ipSplitTunnelingController->toggleSplitTunneling(false);
+    emit isSplitTunnelingEnabledChanged();
+}
+
+bool IpSplitTunnelingUiController::isRussiaPresetEnabled() const
+{
+    return m_ipSplitTunnelingController->isSplitTunnelingEnabled()
+            && m_ipSplitTunnelingController->getRouteMode() == amnezia::RouteMode::VpnAllExceptSites;
 }
