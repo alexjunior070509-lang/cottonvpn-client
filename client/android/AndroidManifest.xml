@@ -42,6 +42,7 @@
 
         <activity
             android:name=".AmneziaActivity"
+            android:screenOrientation="portrait"
             android:configChanges="uiMode|screenSize|smallestScreenSize|screenLayout|orientation|density
                 |fontScale|layoutDirection|locale|keyboard|keyboardHidden|navigation|mcc|mnc"
             android:launchMode="singleInstance"

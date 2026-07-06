@@ -186,6 +186,27 @@ PageType {
                     }
                 }
             }
+
+            // «Назад» — только если ключ уже есть и мы вошли в режим смены
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 2
+                visible: root.hasServer && root.editingKey
+                text: qsTr("◀ Назад")
+                color: root.cMuted
+                font.family: "PT Root UI VF"
+                font.weight: 600
+                font.pixelSize: 15
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        textKey.textField.text = ""
+                        root.editingKey = false
+                    }
+                }
+            }
         }
 
         Item { Layout.fillHeight: true; Layout.fillWidth: true }
