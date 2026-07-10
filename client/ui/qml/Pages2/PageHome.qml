@@ -52,6 +52,125 @@ PageType {
         }
     }
 
+    // ===== шестерёнка — меню настроек (верхний правый угол) =====
+    ImageButtonType {
+        visible: !root.showKeyField
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: 16 + PageController.safeAreaTopMargin
+        anchors.rightMargin: 16
+        implicitWidth: 44
+        implicitHeight: 44
+        image: "qrc:/images/controls/settings.svg"
+        imageColor: root.cMuted
+        onClicked: settingsDrawer.open()
+    }
+
+    // ===== меню настроек (выезжает снизу) =====
+    Drawer {
+        id: settingsDrawer
+        edge: Qt.BottomEdge
+        width: root.width
+        height: settingsCol.implicitHeight + 44 + PageController.safeAreaBottomMargin
+
+        onOpened: ruSwitch.checked = IpSplitTunnelingController.isRussiaPresetEnabled()
+
+        background: Rectangle {
+            color: root.cCard
+            radius: 24
+            Rectangle { // прямые нижние углы
+                color: root.cCard
+                anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
+                height: 24
+            }
+        }
+
+        ColumnLayout {
+            id: settingsCol
+            anchors { left: parent.left; right: parent.right; top: parent.top }
+            anchors.leftMargin: 20
+            anchors.rightMargin: 20
+            anchors.topMargin: 20
+            spacing: 12
+
+            Rectangle { // «ручка» шторки
+                Layout.alignment: Qt.AlignHCenter
+                width: 36; height: 4; radius: 2
+                color: root.cLine
+            }
+
+            Text {
+                text: qsTr("Настройки")
+                color: root.cInk
+                font.family: "PT Root UI VF"
+                font.weight: 800
+                font.pixelSize: 20
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: 4
+                radius: 16
+                color: root.cCard
+                border.color: root.cLine
+                border.width: 1
+                implicitHeight: ruRow.implicitHeight + 24
+
+                RowLayout {
+                    id: ruRow
+                    anchors.fill: parent
+                    anchors.leftMargin: 16
+                    anchors.rightMargin: 12
+                    anchors.topMargin: 12
+                    anchors.bottomMargin: 12
+                    spacing: 8
+
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+                        Text {
+                            text: qsTr("🇷🇺 Российские сервисы напрямую")
+                            color: root.cInk
+                            font.family: "PT Root UI VF"
+                            font.weight: 600
+                            font.pixelSize: 15
+                        }
+                        Text {
+                            text: qsTr("Банки, Госуслуги и т.п. в обход VPN")
+                            color: root.cMuted
+                            font.family: "PT Root UI VF"
+                            font.pixelSize: 12
+                        }
+                    }
+
+                    Switch {
+                        id: ruSwitch
+                        checked: IpSplitTunnelingController.isRussiaPresetEnabled()
+                        onToggled: {
+                            if (checked) {
+                                IpSplitTunnelingController.enableRussiaPreset()
+                            } else {
+                                IpSplitTunnelingController.disableRussiaPreset()
+                            }
+                            if (ConnectionController.isConnected) {
+                                PageController.showNotificationMessage(qsTr("Изменение применится после переподключения VPN"))
+                            }
+                        }
+                    }
+                }
+            }
+
+            Text {
+                Layout.fillWidth: true
+                text: qsTr("Применяется при следующем подключении VPN")
+                color: root.cMuted
+                font.family: "PT Root UI VF"
+                font.pixelSize: 12
+                wrapMode: Text.WordWrap
+            }
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.topMargin: 24 + PageController.safeAreaTopMargin
@@ -128,61 +247,6 @@ PageType {
                 color: root.cMuted
                 font.family: "PT Root UI VF"
                 font.pixelSize: 14
-            }
-        }
-
-        // ===== тумблер «РУ напрямую» (раздельное туннелирование) =====
-        Rectangle {
-            visible: !root.showKeyField
-            Layout.fillWidth: true
-            Layout.topMargin: 18
-            radius: 16
-            color: root.cCard
-            border.color: root.cLine
-            border.width: 1
-            implicitHeight: ruRow.implicitHeight + 24
-
-            RowLayout {
-                id: ruRow
-                anchors.fill: parent
-                anchors.leftMargin: 16
-                anchors.rightMargin: 12
-                anchors.topMargin: 12
-                anchors.bottomMargin: 12
-                spacing: 8
-
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    spacing: 2
-                    Text {
-                        text: qsTr("🇷🇺 Российские сервисы напрямую")
-                        color: root.cInk
-                        font.family: "PT Root UI VF"
-                        font.weight: 600
-                        font.pixelSize: 15
-                    }
-                    Text {
-                        text: qsTr("Банки, Госуслуги и т.п. в обход VPN")
-                        color: root.cMuted
-                        font.family: "PT Root UI VF"
-                        font.pixelSize: 12
-                    }
-                }
-
-                Switch {
-                    id: ruSwitch
-                    checked: IpSplitTunnelingController.isRussiaPresetEnabled()
-                    onToggled: {
-                        if (checked) {
-                            IpSplitTunnelingController.enableRussiaPreset()
-                        } else {
-                            IpSplitTunnelingController.disableRussiaPreset()
-                        }
-                        if (ConnectionController.isConnected) {
-                            PageController.showNotificationMessage(qsTr("Изменение применится после переподключения VPN"))
-                        }
-                    }
-                }
             }
         }
 

@@ -44,6 +44,8 @@ signals:
     void saveFile(const QString &fileName, const QString &data);
 
 private:
+    QMap<QString, QString> russiaPresetSites() const;
+
     IpSplitTunnelingController* m_ipSplitTunnelingController;
     IpSplitTunnelingModel* m_ipSplitTunnelingModel;
 };

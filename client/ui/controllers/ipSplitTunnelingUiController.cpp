@@ -16,6 +16,16 @@ IpSplitTunnelingUiController::IpSplitTunnelingUiController(IpSplitTunnelingContr
       m_ipSplitTunnelingModel(ipSplitTunnelingModel)
 {
     m_ipSplitTunnelingModel->updateModel(m_ipSplitTunnelingController->getCurrentSites());
+
+    // самовосстановление пресета «РУ напрямую»: если он включён, а сохранённый список
+    // отличается от вшитого (например, ru_ip.txt обновили в новой версии) — перезаписываем.
+    if (isRussiaPresetEnabled()) {
+        const QMap<QString, QString> preset = russiaPresetSites();
+        if (!preset.isEmpty() && m_ipSplitTunnelingController->getCurrentSites().size() != preset.size()) {
+            m_ipSplitTunnelingController->addSites(preset, true); // replaceExisting
+            qInfo() << "RussiaPreset: stored site list refreshed to" << preset.size() << "entries";
+        }
+    }
 }
 
 void IpSplitTunnelingUiController::addSite(QString hostname)
@@ -93,12 +103,12 @@ void IpSplitTunnelingUiController::updateModel()
     m_ipSplitTunnelingModel->updateModel(m_ipSplitTunnelingController->getCurrentSites());
 }
 
-void IpSplitTunnelingUiController::enableRussiaPreset()
+QMap<QString, QString> IpSplitTunnelingUiController::russiaPresetSites() const
 {
-    // «всё через VPN, кроме списка» — список российских IP пойдёт напрямую
-    m_ipSplitTunnelingController->setRouteMode(amnezia::RouteMode::VpnAllExceptSites);
-
-    // встроенный список РУ-IP (CIDR с маской; vpnConnection принимает subnet-формат как есть)
+    // встроенный список РУ-IP (CIDR с маской; vpnConnection принимает subnet-формат как есть).
+    // Список компактный (~700 сетей): маршруты уходят в Android одной binder-транзакцией
+    // с лимитом ~1МБ, а на Android <13 exclude-сети ещё и разворачиваются вычитанием
+    // из 0.0.0.0/0 — тысячи записей ломали establish() (VPN не поднимался).
     QFile f(QStringLiteral(":/client_scripts/ru_ip.txt"));
     QMap<QString, QString> sites;
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -110,12 +120,21 @@ void IpSplitTunnelingUiController::enableRussiaPreset()
         }
         f.close();
     }
+    return sites;
+}
+
+void IpSplitTunnelingUiController::enableRussiaPreset()
+{
+    // «всё через VPN, кроме списка» — список российских IP пойдёт напрямую
+    m_ipSplitTunnelingController->setRouteMode(amnezia::RouteMode::VpnAllExceptSites);
+
+    const QMap<QString, QString> sites = russiaPresetSites();
     if (!sites.isEmpty()) {
         m_ipSplitTunnelingController->addSites(sites, true); // replaceExisting
     }
     m_ipSplitTunnelingController->toggleSplitTunneling(true);
 
-    // updateModel() намеренно не вызываем: список (8623 записи) на нашем экране не показывается,
+    // updateModel() намеренно не вызываем: список на нашем экране не показывается,
     // построение модели впустую подвесило бы UI при переключении тумблера.
     emit routeModeChanged();
     emit isSplitTunnelingEnabledChanged();
