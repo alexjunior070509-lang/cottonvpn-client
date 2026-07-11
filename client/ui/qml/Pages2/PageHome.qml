@@ -179,14 +179,26 @@ PageType {
         anchors.rightMargin: 24
         spacing: 14
 
-        Text {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 8
-            text: "CottonVPN"
-            color: root.cViolet
-            font.family: "PT Root UI VF"
-            font.weight: 800
-            font.pixelSize: 26
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft
+            spacing: 10
+
+            Image {
+                source: "qrc:/images/cotton-logo.png"
+                sourceSize.width: 34
+                sourceSize.height: 34
+                Layout.preferredWidth: 34
+                Layout.preferredHeight: 34
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Text {
+                text: "CottonVPN"
+                color: root.cViolet
+                font.family: "PT Root UI VF"
+                font.weight: 800
+                font.pixelSize: 26
+            }
         }
 
         Item { Layout.fillHeight: true; Layout.fillWidth: true }
