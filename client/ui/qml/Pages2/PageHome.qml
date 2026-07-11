@@ -184,12 +184,16 @@ PageType {
             spacing: 10
 
             Image {
-                source: "qrc:/images/cotton-logo.png"
-                sourceSize.width: 34
-                sourceSize.height: 34
-                Layout.preferredWidth: 34
+                source: "qrc:/images/cotton-logo.svg"
+                // sourceSize крупнее целевого размера: SVG растрируется в 128px и
+                // сглаженно уменьшается — без мыла на экранах любой плотности
+                sourceSize.width: 128
+                sourceSize.height: 128
+                Layout.preferredWidth: 40
                 Layout.preferredHeight: 34
                 fillMode: Image.PreserveAspectFit
+                smooth: true
+                mipmap: true
             }
 
             Text {
