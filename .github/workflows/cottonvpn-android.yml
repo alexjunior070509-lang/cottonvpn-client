@@ -79,13 +79,17 @@ jobs:
           SIGNING_KEYSTORE_B64: ${{ secrets.SIGNING_KEYSTORE_B64 }}
         run: echo "$SIGNING_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/cottonvpn.keystore"
 
+      - name: Version (SemVer из файла VERSION)
+        id: ver
+        run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+
       - name: Build (arm64-v8a, release — signed with stable key)
         env:
           QT_INSTALL_DIR: ${{ runner.temp }}
           QT_ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/cottonvpn.keystore
           QT_ANDROID_KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          COTTON_RELEASE_VERSION: "1.0.${{ github.run_number }}"
+          COTTON_RELEASE_VERSION: "${{ steps.ver.outputs.version }}"
         run: |
           chmod +x deploy/build.sh
           deploy/build.sh -t android --abi arm64-v8a --sign --aab
@@ -120,9 +124,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="v1.0.${{ github.run_number }}"
+          TAG="v${{ steps.ver.outputs.version }}"
           gh release create "$TAG" out/CottonVPN-arm64.apk out/CottonVPN-release.aab \
-            --title "CottonVPN 1.0.${{ github.run_number }}" \
-            --notes "CottonVPN Android build ${{ github.run_number }}" \
+            --title "CottonVPN ${{ steps.ver.outputs.version }}" \
+            --notes "CottonVPN Android ${{ steps.ver.outputs.version }} (build ${{ github.run_number }})" \
             --latest \
           || { gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber; gh release upload "$TAG" out/CottonVPN-release.aab --clobber; }
