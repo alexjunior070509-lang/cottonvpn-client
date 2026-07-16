@@ -266,6 +266,22 @@ bool ServersUiController::isDefaultServerFromApi() const
     return isServerFromApi(getDefaultServerId());
 }
 
+QString ServersUiController::getDefaultServerAwgClientPubKey() const
+{
+    const QString defaultServerId = m_serversController->getDefaultServerId();
+    if (defaultServerId.isEmpty()) {
+        return {};
+    }
+    const ContainerConfig containerConfig =
+            m_serversController->getContainerConfig(defaultServerId, DockerContainer::Awg);
+    if (const auto* awgConfig = containerConfig.getAwgProtocolConfig()) {
+        if (awgConfig->hasClientConfig()) {
+            return awgConfig->clientConfig->clientPublicKey;
+        }
+    }
+    return {};
+}
+
 bool ServersUiController::hasServerWithWriteAccess() const
 {
     for (const auto &description : m_orderedServerDescriptions) {

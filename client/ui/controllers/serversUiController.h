@@ -72,6 +72,10 @@ public slots:
     bool isDefaultServerFromApi() const;
     bool hasServerWithWriteAccess() const;
 
+    // CottonVPN: pubkey AWG-ключа дефолтного сервера — идентификатор подписки
+    // для GET /app/status (главный экран показывает трафик/остаток дней)
+    QString getDefaultServerAwgClientPubKey() const;
+
     QString serverName(const QString &serverId) const;
     QString serverHostName(const QString &serverId) const;
     int serverDefaultContainer(const QString &serverId) const;

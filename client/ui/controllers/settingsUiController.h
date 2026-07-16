@@ -56,6 +56,8 @@ public slots:
     void restoreAppConfigFromData(const QByteArray &data);
 
     QString getAppVersion();
+    // CottonVPN: голый SemVer релиза (1.2.0) для репорта в /app/status; пусто вне CI-сборки
+    QString getReleaseVersion();
 
     void clearSettings();
 

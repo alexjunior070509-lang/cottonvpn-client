@@ -30,12 +30,53 @@ PageType {
     readonly property bool isOn: ConnectionController.isConnected
     readonly property bool isBusy: ConnectionController.isConnectionInProgress
 
+    // ===== статус подписки с бэкенда (трафик за месяц + остаток дней) =====
+    // Идентификатор — pubkey AWG-ключа; заодно репортим свою версию,
+    // чтобы бот мог показать «доступно обновление».
+    property var subInfo: null
+
+    function refreshSubInfo() {
+        if (!root.hasServer) { root.subInfo = null; return }
+        var pub = ServersUiController.getDefaultServerAwgClientPubKey()
+        if (!pub) { root.subInfo = null; return }
+        var url = "https://webhook.cottonvpn.com/app/status?pub=" + encodeURIComponent(pub)
+                + "&v=" + encodeURIComponent(SettingsController.getReleaseVersion())
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET", url)
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return
+            if (xhr.status === 200) {
+                try { root.subInfo = JSON.parse(xhr.responseText) } catch (e) {}
+            }
+        }
+        xhr.send()
+    }
+
+    function daysWord(n) {
+        var m10 = n % 10, m100 = n % 100
+        if (m10 === 1 && m100 !== 11) return qsTr("день")
+        if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return qsTr("дня")
+        return qsTr("дней")
+    }
+
+    Component.onCompleted: refreshSubInfo()
+    onIsOnChanged: refreshSubInfo()
+    onHasServerChanged: refreshSubInfo()
+
+    Timer {
+        interval: 15 * 60 * 1000
+        repeat: true
+        running: true
+        onTriggered: root.refreshSubInfo()
+    }
+
     Connections {
         target: ImportController
         function onImportFinished() {
             textKey.textField.text = ""
             root.editingKey = false
             PageController.showNotificationMessage(qsTr("Ключ добавлен"))
+            root.refreshSubInfo()
         }
         function onImportErrorOccurred(errorCode, goToPageHome) {
             PageController.showNotificationMessage(qsTr("Не удалось добавить ключ — проверь, что вставлен правильно"))
@@ -263,6 +304,103 @@ PageType {
                 color: root.cMuted
                 font.family: "PT Root UI VF"
                 font.pixelSize: 14
+            }
+        }
+
+        // ===== карточка подписки: трафик за месяц + остаток дней =====
+        Rectangle {
+            id: subCard
+            visible: !root.showKeyField && root.subInfo !== null
+            Layout.fillWidth: true
+            Layout.topMargin: 18
+            radius: 16
+            color: root.cCard
+            border.color: root.cLine
+            border.width: 1
+            implicitHeight: subCol.implicitHeight + 28
+
+            readonly property real usedGb: root.subInfo ? root.subInfo.traffic_used / 1073741824 : 0
+            readonly property int limitGb: root.subInfo ? Math.round(root.subInfo.traffic_limit / 1073741824) : 0
+            readonly property real usedFrac: (root.subInfo && root.subInfo.traffic_limit > 0)
+                                             ? Math.min(1, root.subInfo.traffic_used / root.subInfo.traffic_limit) : 0
+            readonly property bool blocked: root.subInfo ? root.subInfo.traffic_blocked === true : false
+            readonly property int daysLeft: root.subInfo ? root.subInfo.days_left : 0
+
+            ColumnLayout {
+                id: subCol
+                anchors { left: parent.left; right: parent.right; top: parent.top }
+                anchors.leftMargin: 16
+                anchors.rightMargin: 16
+                anchors.topMargin: 14
+                spacing: 8
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Text {
+                        text: qsTr("Трафик за месяц")
+                        color: root.cMuted
+                        font.family: "PT Root UI VF"
+                        font.pixelSize: 13
+                    }
+                    Item { Layout.fillWidth: true }
+                    Text {
+                        text: subCard.limitGb > 0
+                              ? qsTr("%1 из %2 ГБ").arg(subCard.usedGb.toFixed(1)).arg(subCard.limitGb)
+                              : qsTr("%1 ГБ").arg(subCard.usedGb.toFixed(1))
+                        color: root.cInk
+                        font.family: "PT Root UI VF"
+                        font.weight: 700
+                        font.pixelSize: 13
+                    }
+                }
+
+                Rectangle { // прогресс-бар лимита
+                    Layout.fillWidth: true
+                    height: 6
+                    radius: 3
+                    color: root.cLine
+                    visible: subCard.limitGb > 0
+
+                    Rectangle {
+                        width: parent.width * subCard.usedFrac
+                        height: parent.height
+                        radius: 3
+                        color: subCard.blocked ? "#E5484D"
+                             : (subCard.usedFrac > 0.9 ? "#F59E0B" : root.cViolet)
+                    }
+                }
+
+                Text {
+                    visible: subCard.blocked
+                    Layout.fillWidth: true
+                    text: qsTr("Лимит исчерпан — доступ вернётся с 1 числа")
+                    color: "#E5484D"
+                    font.family: "PT Root UI VF"
+                    font.weight: 600
+                    font.pixelSize: 12
+                    wrapMode: Text.WordWrap
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Text {
+                        text: qsTr("Подписка")
+                        color: root.cMuted
+                        font.family: "PT Root UI VF"
+                        font.pixelSize: 13
+                    }
+                    Item { Layout.fillWidth: true }
+                    Text {
+                        readonly property bool active: root.subInfo ? root.subInfo.active === true : false
+                        readonly property int d: subCard.daysLeft
+                        text: active ? qsTr("осталось %1 %2").arg(d).arg(root.daysWord(d))
+                                     : qsTr("не активна")
+                        color: active ? root.cInk : "#E5484D"
+                        font.family: "PT Root UI VF"
+                        font.weight: 700
+                        font.pixelSize: 13
+                    }
+                }
             }
         }
 

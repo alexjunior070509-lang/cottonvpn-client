@@ -173,6 +173,11 @@ QString SettingsUiController::getAppVersion()
     return m_settingsController->getAppVersion();
 }
 
+QString SettingsUiController::getReleaseVersion()
+{
+    return QStringLiteral(COTTON_RELEASE_VERSION);
+}
+
 void SettingsUiController::clearSettings()
 {
     m_settingsController->clearSettings();
