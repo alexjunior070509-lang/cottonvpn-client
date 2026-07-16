@@ -20,7 +20,7 @@ enum class VpnProto(
     },
 
     AWG(
-        "AmneziaWG",
+        "AWG",
         "org.amnezia.vpn:amneziaAwgService",
         AwgService::class.java
     ) {

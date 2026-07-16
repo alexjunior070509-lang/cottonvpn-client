@@ -19,8 +19,8 @@ set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
     CACHE STRING "" FORCE)
 
 project(${PROJECT} VERSION ${AMNEZIAVPN_VERSION}
-        DESCRIPTION "AmneziaVPN"
-        HOMEPAGE_URL "https://amnezia.org/"
+        DESCRIPTION "CottonVPN"
+        HOMEPAGE_URL "https://cottonvpn.com/"
 )
 
 # trigger conan to kick off `conan install` globally

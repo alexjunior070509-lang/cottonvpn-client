@@ -1,1 +1,1 @@
-A multi-protocol, open-source VPN client that offers the option to set up your own server.
+Простой и быстрый VPN: вставь ключ из Telegram-бота и нажми кнопку.

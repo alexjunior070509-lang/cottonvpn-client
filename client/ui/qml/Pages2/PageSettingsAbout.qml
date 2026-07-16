@@ -42,7 +42,7 @@ PageType {
 
             Image {
                 id: image
-                source: "qrc:/images/amneziaBigLogo.png"
+                source: "qrc:/images/cotton-logo.svg"
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.topMargin: 16
@@ -149,7 +149,7 @@ PageType {
                 text: qsTr("Check for updates")
 
                 clickedFunc: function() {
-                    Qt.openUrlExternally("https://github.com/amnezia-vpn/desktop-client/releases/latest")
+                    Qt.openUrlExternally("https://github.com/alexjunior070509-lang/cottonvpn-client/releases/latest")
                 }
             }
 
@@ -212,7 +212,7 @@ PageType {
         readonly property string description: qsTr("Discover the source code")
         readonly property string imageSource: "qrc:/images/controls/github.svg"
         readonly property var handler: function() {
-            Qt.openUrlExternally(qsTr("https://github.com/amnezia-vpn/amnezia-client"))
+            Qt.openUrlExternally("https://github.com/alexjunior070509-lang/cottonvpn-client")
         }
     }
 
@@ -221,7 +221,7 @@ PageType {
 
         readonly property string title: qsTr("Website")
         readonly property string description: qsTr("Visit official website")
-        readonly property string imageSource: "qrc:/images/controls/amnezia.svg"
+        readonly property string imageSource: "qrc:/images/controls/globe-2.svg"
         readonly property var handler: function() {
             Qt.openUrlExternally(LanguageUiController.getCurrentSiteUrl())
         }
