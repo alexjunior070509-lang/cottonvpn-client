@@ -18,6 +18,7 @@ Button {
     property string connectedFillColor: "#10B981"   // зелёный — VPN включён
     property string offFillColor: "#FFFFFF"          // белый — выключен
     property string glowColor: "#7C5CFF"             // сиреневая подсветка (как на сайте)
+    property string ringBorderColor: "#ECE7F8"       // ободок круга (в тёмной теме темнее)
     property bool buttonActiveFocus: activeFocus && (Qt.platform.os !== "android" || SettingsController.isOnTv())
 
     property bool isFocusable: true
@@ -78,7 +79,7 @@ Button {
                 return ConnectionController.isConnected ? root.connectedFillColor : root.offFillColor
             }
             border.width: ConnectionController.isConnected ? 0 : 1
-            border.color: "#ECE7F8"
+            border.color: root.ringBorderColor
             Behavior on color { ColorAnimation { duration: 250 } }
         }
 

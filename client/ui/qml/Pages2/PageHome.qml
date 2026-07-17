@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtCore
 
 import PageEnum 1.0
 import Style 1.0
@@ -19,13 +20,25 @@ PageType {
     property bool editingKey: false
     property bool showKeyField: !hasServer || editingKey
 
-    // палитра лендинга cottonvpn.com
-    readonly property string cInk:     "#241C47"
-    readonly property string cMuted:   "#6C6790"
-    readonly property string cViolet:  "#7C5CFF"
-    readonly property string cLine:    "#ECE7F8"
-    readonly property string cGreen:   "#10B981"
-    readonly property string cCard:    "#FFFFFF"
+    // ===== тема =====
+    // "auto" — как в системе; тумблер в шторке настроек переключает на явные dark/light
+    Settings {
+        id: themeSettings
+        category: "cotton"
+        property string theme: "auto"
+    }
+    // Qt::ColorScheme::Dark == 2 — числом, чтобы не зависеть от регистрации scoped-enum в QML
+    readonly property bool systemDark: Application.styleHints.colorScheme === 2
+    readonly property bool darkMode: themeSettings.theme === "auto" ? systemDark
+                                                                    : themeSettings.theme === "dark"
+
+    // палитра лендинга cottonvpn.com (+ тёмный вариант в тех же тонах)
+    readonly property string cInk:     darkMode ? "#F1EDFF" : "#241C47"
+    readonly property string cMuted:   darkMode ? "#9D97C2" : "#6C6790"
+    readonly property string cViolet:  darkMode ? "#9B82FF" : "#7C5CFF"
+    readonly property string cLine:    darkMode ? "#332B58" : "#ECE7F8"
+    readonly property string cGreen:   darkMode ? "#34D399" : "#10B981"
+    readonly property string cCard:    darkMode ? "#231D42" : "#FFFFFF"
 
     readonly property bool isOn: ConnectionController.isConnected
     readonly property bool isBusy: ConnectionController.isConnectionInProgress
@@ -83,13 +96,13 @@ PageType {
         }
     }
 
-    // фон-градиент как на сайте
+    // фон-градиент как на сайте (тёмный — те же сиреневые тона, глубокие)
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#FBF8FF" }
-            GradientStop { position: 0.55; color: "#F4EEFB" }
-            GradientStop { position: 1.0; color: "#FBF6FF" }
+            GradientStop { position: 0.0;  color: root.darkMode ? "#17122E" : "#FBF8FF" }
+            GradientStop { position: 0.55; color: root.darkMode ? "#1C1638" : "#F4EEFB" }
+            GradientStop { position: 1.0;  color: root.darkMode ? "#191330" : "#FBF6FF" }
         }
     }
 
@@ -201,6 +214,49 @@ PageType {
                 }
             }
 
+            Rectangle {
+                Layout.fillWidth: true
+                radius: 16
+                color: root.cCard
+                border.color: root.cLine
+                border.width: 1
+                implicitHeight: themeRow.implicitHeight + 24
+
+                RowLayout {
+                    id: themeRow
+                    anchors.fill: parent
+                    anchors.leftMargin: 16
+                    anchors.rightMargin: 12
+                    anchors.topMargin: 12
+                    anchors.bottomMargin: 12
+                    spacing: 8
+
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+                        Text {
+                            text: qsTr("🌙 Тёмная тема")
+                            color: root.cInk
+                            font.family: "PT Root UI VF"
+                            font.weight: 600
+                            font.pixelSize: 15
+                        }
+                        Text {
+                            text: themeSettings.theme === "auto" ? qsTr("Сейчас: как в системе")
+                                                                 : qsTr("Выбрана вручную")
+                            color: root.cMuted
+                            font.family: "PT Root UI VF"
+                            font.pixelSize: 12
+                        }
+                    }
+
+                    Switch {
+                        checked: root.darkMode
+                        onToggled: themeSettings.theme = checked ? "dark" : "light"
+                    }
+                }
+            }
+
             Text {
                 Layout.fillWidth: true
                 text: qsTr("Применяется при следующем подключении VPN")
@@ -258,8 +314,9 @@ PageType {
             defaultButtonColor: root.cMuted        // кольцо/глиф когда выключено
             connectedButtonColor: root.cGreen      // кольцо когда включено
             connectedFillColor: root.cGreen        // заливка круга когда включено
-            offFillColor: root.cCard               // белый круг когда выключено
+            offFillColor: root.cCard               // круг когда выключено (белый/тёмный)
             glowColor: root.cViolet
+            ringBorderColor: root.cLine
         }
 
         // индикатор состояния: точка + крупное слово + подпись
@@ -277,7 +334,7 @@ PageType {
                     id: statusDot
                     width: 12; height: 12; radius: 6
                     Layout.alignment: Qt.AlignVCenter
-                    color: root.isOn ? root.cGreen : (root.isBusy ? root.cViolet : "#C7C2DE")
+                    color: root.isOn ? root.cGreen : (root.isBusy ? root.cViolet : (root.darkMode ? "#4A4370" : "#C7C2DE"))
 
                     SequentialAnimation on opacity {
                         running: root.isOn || root.isBusy
@@ -451,7 +508,7 @@ PageType {
                 defaultColor: root.cViolet
                 hoveredColor: "#6B4FE6"
                 pressedColor: "#5B41D6"
-                textColor: root.cCard
+                textColor: "#FFFFFF"
 
                 clickedFunc: function() {
                     if (ImportController.extractConfigFromData(textKey.textField.text)) {
