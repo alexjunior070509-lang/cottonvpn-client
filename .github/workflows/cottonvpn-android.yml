@@ -6,6 +6,8 @@ on:
     branches: [dev]
     paths:
       - ".github/workflows/cottonvpn-android.yml"
+      # бамп версии = релиз: правка VERSION запускает сборку и публикацию сама
+      - "VERSION"
 
 jobs:
   build:
