@@ -127,8 +127,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="v${{ steps.ver.outputs.version }}"
+          NOTES_FILE=WHATSNEW.txt
+          [ -f "$NOTES_FILE" ] || NOTES_FILE=/dev/null
           gh release create "$TAG" out/CottonVPN-arm64.apk out/CottonVPN-release.aab \
             --title "CottonVPN ${{ steps.ver.outputs.version }}" \
-            --notes "CottonVPN Android ${{ steps.ver.outputs.version }} (build ${{ github.run_number }})" \
+            --notes-file "$NOTES_FILE" \
             --latest \
           || { gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber; gh release upload "$TAG" out/CottonVPN-release.aab --clobber; }
