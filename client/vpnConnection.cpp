@@ -551,24 +551,39 @@ void VpnConnection::disconnectFromVpn()
     setConnectionState(Vpn::ConnectionState::Disconnecting);
 
 #ifdef Q_OS_ANDROID
+    // CottonVPN (фикс залипающей зелёной кнопки): подтверждение Disconnected от Android-сервиса
+    // приходит АСИНХРОННО. Раньше тут слушали AndroidController::vpnStateChanged — узкий сигнал,
+    // который эмитится только для одного конкретного JNI-колбэка (STATUS_CHANGED); подтверждения,
+    // приходящие другими путями (STATUS-poll, serviceDisconnected и т.п.), его не будили.
+    // Слушаем AndroidController::connectionStateChanged — единую точку, куда AndroidController
+    // сам нормализует ВСЕ пути подтверждения (см. android_controller.cpp конструктор).
+    // Также m_vpnProtocol/androidVpnProtocol теперь не обнуляются сразу после stop() (как раньше,
+    // безусловно, без #ifdef) — а только когда подтверждение реально пришло. Раньше синхронное
+    // `m_vpnProtocol = nullptr` уничтожало androidVpnProtocol (QSharedPointer, refcount → 0) ДО
+    // прихода асинхронного ответа, Qt рвал соединения androidVpnProtocol'а — и если единственный
+    // fallback (этот самый connect) тоже не срабатывал, о Disconnected UI больше никогда не узнавал.
     auto *const connection = new QMetaObject::Connection;
-    *connection = connect(AndroidController::instance(), &AndroidController::vpnStateChanged, this,
-                          [this, connection](AndroidController::ConnectionState state) {
-                              if (state == AndroidController::ConnectionState::DISCONNECTED) {
+    *connection = connect(AndroidController::instance(), &AndroidController::connectionStateChanged, this,
+                          [this, connection](Vpn::ConnectionState state) {
+                              if (state == Vpn::ConnectionState::Disconnected) {
                                   setConnectionState(Vpn::ConnectionState::Disconnected);
+                                  androidVpnProtocol = nullptr;
+                                  m_vpnProtocol = nullptr;
                                   disconnect(*connection);
                                   delete connection;
                               }
                           });
-#endif
 
     m_vpnProtocol->stop();
+#else
+    m_vpnProtocol->stop();
 
-#if !defined(Q_OS_ANDROID) && !defined(AMNEZIA_DESKTOP)
+#if !defined(AMNEZIA_DESKTOP)
     m_vpnProtocol->deleteLater();
 #endif
 
     m_vpnProtocol = nullptr;
+#endif
 }
 
 void VpnConnection::setConnectionState(Vpn::ConnectionState state) {
