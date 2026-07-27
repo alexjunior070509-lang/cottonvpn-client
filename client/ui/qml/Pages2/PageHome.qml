@@ -48,7 +48,17 @@ PageType {
     // чтобы бот мог показать «доступно обновление».
     property var subInfo: null
 
-    function refreshSubInfo() {
+    // Первый запрос сразу после старта/переключения ключа иногда ловит непрогретое
+    // соединение (DNS/TLS) и падает — один автоматический повтор через паузу, чтобы
+    // юзер не видел «подписка не активна» из-за разового сетевого сбоя.
+    Timer {
+        id: subInfoRetryTimer
+        interval: 4000
+        repeat: false
+        onTriggered: root.refreshSubInfo(true)
+    }
+
+    function refreshSubInfo(isRetry) {
         if (!root.hasServer) { root.subInfo = null; return }
         var pub = ServersUiController.getDefaultServerAwgClientPubKey()
         if (!pub) { root.subInfo = null; return }
@@ -60,6 +70,8 @@ PageType {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
             if (xhr.status === 200) {
                 try { root.subInfo = JSON.parse(xhr.responseText) } catch (e) {}
+            } else if (!isRetry) {
+                subInfoRetryTimer.start()
             }
         }
         xhr.send()
