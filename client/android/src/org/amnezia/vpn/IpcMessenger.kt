@@ -14,6 +14,11 @@ class IpcMessenger(
     private val onRemoteException: () -> Unit = {}
 ) {
     private var messenger: Messenger? = null
+    // CottonVPN: send() раньше молча терял команду, если messenger ещё null (окно между
+    // onStop→onStart, пока сервис не привязался заново) — заявленная кнопка «выключить»
+    // не долетала до сервиса вообще, без единой ошибки. Теперь такие команды копятся и
+    // досылаются в set(), когда привязка появится.
+    private val pending = mutableListOf<Message>()
     val name = messengerName ?: "Unknown"
 
     constructor(
@@ -27,21 +32,36 @@ class IpcMessenger(
 
     fun set(messenger: Messenger) {
         this.messenger = messenger
+        if (pending.isNotEmpty()) {
+            val queued = pending.toList()
+            pending.clear()
+            queued.forEach { messenger.sendMsg(it) }
+        }
     }
 
     fun reset() {
         messenger = null
     }
 
-    fun send(msg: () -> Message) = messenger?.sendMsg(msg())
+    fun send(msg: () -> Message) = sendOrQueue(msg())
 
-    fun send(msg: Message, replyTo: Messenger) = messenger?.sendMsg(msg.apply { this.replyTo = replyTo })
+    fun send(msg: Message, replyTo: Messenger) = sendOrQueue(msg.apply { this.replyTo = replyTo })
 
     fun <T> send(msg: T)
-        where T : Enum<T>, T : IpcMessage = messenger?.sendMsg(msg.packToMessage())
+        where T : Enum<T>, T : IpcMessage = sendOrQueue(msg.packToMessage())
 
     fun <T> send(msg: T, replyTo: Messenger)
-        where T : Enum<T>, T : IpcMessage = messenger?.sendMsg(msg.packToMessage().apply { this.replyTo = replyTo })
+        where T : Enum<T>, T : IpcMessage = sendOrQueue(msg.packToMessage().apply { this.replyTo = replyTo })
+
+    private fun sendOrQueue(msg: Message) {
+        val m = messenger
+        if (m == null) {
+            Log.d(TAG, "$name messenger not bound yet, queuing message")
+            pending += msg
+        } else {
+            m.sendMsg(msg)
+        }
+    }
 
     private fun Messenger.sendMsg(msg: Message) {
         try {
