@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QMap>
+#include <QSet>
 
 #include "systemController.h"
 #include "core/utils/errorCodes.h"
@@ -21,7 +22,17 @@ IpSplitTunnelingUiController::IpSplitTunnelingUiController(IpSplitTunnelingContr
     // отличается от вшитого (например, ru_ip.txt обновили в новой версии) — перезаписываем.
     if (isRussiaPresetEnabled()) {
         const QMap<QString, QString> preset = russiaPresetSites();
-        if (!preset.isEmpty() && m_ipSplitTunnelingController->getCurrentSites().size() != preset.size()) {
+        // сверяем СОДЕРЖИМОЕ, а не размер: в обновлении список может смениться при
+        // том же числе сетей (бюджет маршрутов фиксирован) — по размеру это не видно
+        QSet<QString> storedSites;
+        for (const auto &site : m_ipSplitTunnelingController->getCurrentSites()) {
+            storedSites.insert(site.first);
+        }
+        QSet<QString> presetSites;
+        for (auto it = preset.keyBegin(); it != preset.keyEnd(); ++it) {
+            presetSites.insert(*it);
+        }
+        if (!preset.isEmpty() && storedSites != presetSites) {
             m_ipSplitTunnelingController->addSites(preset, true); // replaceExisting
             qInfo() << "RussiaPreset: stored site list refreshed to" << preset.size() << "entries";
         }
