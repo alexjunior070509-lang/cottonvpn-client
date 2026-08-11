@@ -5,6 +5,10 @@
 #include "core/utils/protocolEnum.h"
 #include "core/models/protocolConfig.h"
 #include "core/models/containerConfig.h"
+#include "core/models/protocols/xrayProtocolConfig.h"
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 using namespace amnezia;
 
@@ -277,6 +281,41 @@ QString ServersUiController::getDefaultServerAwgClientPubKey() const
     if (const auto* awgConfig = containerConfig.getAwgProtocolConfig()) {
         if (awgConfig->hasClientConfig()) {
             return awgConfig->clientConfig->clientPublicKey;
+        }
+    }
+    return {};
+}
+
+QString ServersUiController::getDefaultServerXrayClientId() const
+{
+    // CottonVPN: на xray-ключе подписку опознаёт не AWG-pubkey, а UUID клиента из
+    // outbounds[].settings.vnext[].users[].id — его же знает сервер (`subscriptions.uuid`).
+    const QString defaultServerId = m_serversController->getDefaultServerId();
+    if (defaultServerId.isEmpty()) {
+        return {};
+    }
+    const ContainerConfig containerConfig =
+            m_serversController->getContainerConfig(defaultServerId, DockerContainer::Xray);
+    const auto *xrayConfig = containerConfig.protocolConfig.as<XrayProtocolConfig>();
+    if (!xrayConfig || !xrayConfig->hasClientConfig()) {
+        return {};
+    }
+    const QJsonDocument doc = QJsonDocument::fromJson(xrayConfig->clientConfig->nativeConfig.toUtf8());
+    if (!doc.isObject()) {
+        return {};
+    }
+    const QJsonArray outbounds = doc.object().value(QStringLiteral("outbounds")).toArray();
+    for (const QJsonValue &v : outbounds) {
+        const QJsonArray vnext = v.toObject().value(QStringLiteral("settings")).toObject()
+                                     .value(QStringLiteral("vnext")).toArray();
+        for (const QJsonValue &n : vnext) {
+            const QJsonArray users = n.toObject().value(QStringLiteral("users")).toArray();
+            if (!users.isEmpty()) {
+                const QString id = users.first().toObject().value(QStringLiteral("id")).toString();
+                if (!id.isEmpty()) {
+                    return id;
+                }
+            }
         }
     }
     return {};

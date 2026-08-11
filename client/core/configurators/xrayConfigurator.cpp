@@ -123,6 +123,89 @@ namespace {
             pc.setNativeConfig(c);
         }
     }
+
+    // CottonVPN: читает вшитый список (по строке на запись, комментарии с '#' пропускаются)
+    QJsonArray loadResourceList(const QString &path, const QString &prefix = QString())
+    {
+        QJsonArray out;
+        QFile f(path);
+        if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            logger.warning() << "RU split: resource not found:" << path;
+            return out;
+        }
+        while (!f.atEnd()) {
+            const QString line = QString::fromUtf8(f.readLine()).trimmed();
+            if (line.isEmpty() || line.startsWith(QLatin1Char('#'))) {
+                continue;
+            }
+            out.append(prefix.isEmpty() ? line : prefix + line);
+        }
+        f.close();
+        return out;
+    }
+
+    // CottonVPN: «РУ напрямую» для xray-ядра — правила кладём ВНУТРЬ конфига, а не в
+    // маршруты VpnService. Почему так: у WireGuard сплит возможен только по IP и упирается
+    // в лимит Android (~1–2 тыс. маршрутов одной binder-транзакцией, урок 2026-07-11), а
+    // xray сам разбирает трафик внутри туннеля — значит доступны и домены, и полный список
+    // сетей, ровно как в INCY на iOS. Списки вшиты в приложение, докачивать нечего.
+    void applyRuSplitTunneling(const amnezia::SplitTunnelingSettings &split, amnezia::ProtocolConfig &pc)
+    {
+        if (!split.isSitesSplitTunnelingEnabled || split.routeMode != amnezia::RouteMode::VpnAllExceptSites) {
+            return;
+        }
+        QString c = pc.nativeConfig();
+        if (c.isEmpty()) {
+            return;
+        }
+        QJsonDocument doc = QJsonDocument::fromJson(c.toUtf8());
+        if (!doc.isObject()) {
+            return;
+        }
+        QJsonObject cfg = doc.object();
+        // если правила уже есть (сторонний конфиг со своей маршрутизацией) — не трогаем
+        if (cfg.contains(QStringLiteral("routing"))) {
+            return;
+        }
+        // теги берём из самого конфига: direct-исход обязателен, иначе правила некуда вести
+        QString directTag;
+        const QJsonArray outbounds = cfg.value(QStringLiteral("outbounds")).toArray();
+        for (const QJsonValue &v : outbounds) {
+            if (v.toObject().value(QStringLiteral("protocol")).toString() == QLatin1String("freedom")) {
+                directTag = v.toObject().value(QStringLiteral("tag")).toString();
+                break;
+            }
+        }
+        if (directTag.isEmpty()) {
+            logger.warning() << "RU split: no freedom outbound in config, skipping";
+            return;
+        }
+
+        const QJsonArray domains = loadResourceList(QStringLiteral(":/client_scripts/ru_domains.txt"),
+                                                    QStringLiteral("domain:"));
+        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
+        // приватные сети — тоже напрямую, иначе принтер и роутер уезжают в туннель
+        for (const auto &n : { "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16" }) {
+            ips.append(QString::fromLatin1(n));
+        }
+        if (domains.isEmpty() && ips.isEmpty()) {
+            return;
+        }
+
+        QJsonArray rules;
+        if (!domains.isEmpty()) {
+            rules.append(QJsonObject { { "type", "field" }, { "domain", domains }, { "outboundTag", directTag } });
+        }
+        rules.append(QJsonObject { { "type", "field" }, { "ip", ips }, { "outboundTag", directTag } });
+
+        QJsonObject routing;
+        routing[QStringLiteral("domainStrategy")] = QStringLiteral("IPIfNonMatch");
+        routing[QStringLiteral("rules")] = rules;
+        cfg[QStringLiteral("routing")] = routing;
+
+        logger.info() << "RU split: injected" << domains.size() << "domains and" << ips.size() << "networks";
+        pc.setNativeConfig(QString::fromUtf8(QJsonDocument(cfg).toJson(QJsonDocument::Compact)));
+    }
 } // namespace
 
 XrayConfigurator::XrayConfigurator(SshSession* sshSession, QObject *parent)
@@ -135,6 +218,7 @@ amnezia::ProtocolConfig XrayConfigurator::processConfigWithLocalSettings(const a
 {
     applyDnsToNativeConfig(settings.dns, protocolConfig);
     sanitizeXrayNativeConfig(protocolConfig);
+    applyRuSplitTunneling(settings.splitTunneling, protocolConfig);
     return protocolConfig;
 }
 
