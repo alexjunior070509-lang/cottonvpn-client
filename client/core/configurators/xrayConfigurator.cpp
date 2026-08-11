@@ -211,6 +211,25 @@ namespace {
         }
 
         QJsonArray rules;
+        // DNS-запросы отдаём встроенному обработчику ядра: обычный UDP-релей через Reality
+        // работает плохо, ответы теряются и телефон переспрашивает — 2026-08-11 это дало
+        // 70% всего трафика в туннеле и «заедающий» интерфейс.
+        if (!cfg.value(QStringLiteral("outbounds")).toArray().isEmpty()) {
+            bool hasDnsOut = false;
+            QJsonArray outs = cfg.value(QStringLiteral("outbounds")).toArray();
+            for (const QJsonValue &v : outs) {
+                if (v.toObject().value(QStringLiteral("protocol")).toString() == QLatin1String("dns")) {
+                    hasDnsOut = true;
+                    break;
+                }
+            }
+            if (!hasDnsOut) {
+                outs.append(QJsonObject { { "tag", "dns-out" }, { "protocol", "dns" },
+                                          { "settings", QJsonObject { { "nonIPQuery", "drop" } } } });
+                cfg[QStringLiteral("outbounds")] = outs;
+            }
+            rules.append(QJsonObject { { "type", "field" }, { "port", 53 }, { "outboundTag", "dns-out" } });
+        }
         if (!domains.isEmpty()) {
             rules.append(QJsonObject { { "type", "field" }, { "domain", domains }, { "outboundTag", directTag } });
         }
