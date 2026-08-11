@@ -329,6 +329,7 @@ kazanexpress.ru
 kchr.ru
 kemerovo.ru
 keyx5.ru
+kfc.ru
 khabarovsk.ru
 khakassia.ru
 khangar.net
@@ -491,6 +492,7 @@ ozonru.me
 ozonsport.ru
 ozonstatus.ru
 ozonusercontent.com
+papajohns.ru
 payecom.ru
 payment.ru
 paywb.com
@@ -762,6 +764,7 @@ t.finance
 t2.ru
 tagbank.ru
 tambov.ru
+tanuki.ru
 tass.ru
 tatarstan.ru
 tatsotsbank.ru
@@ -979,6 +982,7 @@ xn--d1aqf.xn--p1ai
 xn--e1adjldbbpv.xn--90ais
 xn--h1ao.site
 ya.ru
+yakitoriya.ru
 yaklass.ru
 yakutia.ru
 yamal.ru
