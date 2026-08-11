@@ -2,7 +2,9 @@
 #define VERSION_H
 
 #ifndef APP_VERSION
-#define APP_VERSION "@CMAKE_PROJECT_VERSION@"
+// Полная версия из файла VERSION: у черновых сборок она с суффиксом (1.4.3-rc1),
+// а CMAKE_PROJECT_VERSION хранит только числовую часть — CMake иначе не собирает.
+#define APP_VERSION "@COTTON_FULL_VERSION@"
 #endif
 
 #ifndef APP_MAJOR_VERSION

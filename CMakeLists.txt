@@ -9,7 +9,12 @@ set(PROJECT AmneziaVPN)
 # CI берёт тег релиза из того же файла. APP_ANDROID_VERSION_CODE растёт на 1 каждый билд.
 file(READ ${CMAKE_CURRENT_LIST_DIR}/VERSION COTTON_SEMVER)
 string(STRIP "${COTTON_SEMVER}" COTTON_SEMVER)
-set(AMNEZIAVPN_VERSION ${COTTON_SEMVER})
+# У черновых сборок версия с суффиксом (1.4.3-rc1) — CMake в project(VERSION ...) принимает
+# ТОЛЬКО числа и падает с «format invalid». Для сборки берём числовую часть, полная строка
+# остаётся у CI для тега и заголовка релиза.
+string(REGEX REPLACE "-.*$" "" COTTON_SEMVER_NUMERIC "${COTTON_SEMVER}")
+set(AMNEZIAVPN_VERSION ${COTTON_SEMVER_NUMERIC})
+set(COTTON_FULL_VERSION ${COTTON_SEMVER})
 
 set(QT_CREATOR_SKIP_PACKAGE_MANAGER_SETUP ON CACHE BOOL "" FORCE)
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES
