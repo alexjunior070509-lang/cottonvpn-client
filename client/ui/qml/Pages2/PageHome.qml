@@ -105,17 +105,14 @@ PageType {
         xhr.send()
     }
 
+    // Черновая сборка? Версия с суффиксом через дефис (1.4.3-rc7) — такие ставит только
+    // владелец для проверки. В них ведём журнал и отправляем его при запуске, чтобы
+    // разбирать поломки по факту, а не по описанию. В обычных релизах ничего этого нет:
+    // кнопку отправки владелец просил убрать (2026-08-11).
+    readonly property bool draftBuild: SettingsController.getReleaseVersion().indexOf("-") >= 0
+
     function uploadLogs(hostIndex) {
         var idx = hostIndex || 0
-        // Журнал в приложении по умолчанию выключен — без него отправлять нечего
-        // (первая присланная выгрузка оказалась пустой, 2026-08-11). Включаем и просим
-        // повторить действие: записи появятся только с этого момента.
-        if (!SettingsController.isLoggingEnabled) {
-            SettingsController.isLoggingEnabled = true
-            PageController.showNotificationMessage(
-                qsTr("Запись включена. Повтори то, что не работает, и нажми ещё раз"))
-            return
-        }
         var pub = ServersUiController.getDefaultServerAwgClientPubKey()
         var uuid = pub ? "" : ServersUiController.getDefaultServerXrayClientId()
         var url = root.subInfoHosts[idx] + "/app/logs?"
@@ -125,20 +122,12 @@ PageType {
         xhr.setRequestHeader("Content-Type", "text/plain; charset=utf-8")
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
-            if (xhr.status === 200) {
-                PageController.showNotificationMessage(qsTr("Логи отправлены, спасибо"))
-            } else if (idx + 1 < root.subInfoHosts.length) {
+            if (xhr.status !== 200 && idx + 1 < root.subInfoHosts.length) {
                 root.uploadLogs(idx + 1)     // основной адрес недоступен — пробуем прямой
-            } else {
-                PageController.showNotificationMessage(qsTr("Не удалось отправить логи — проверь интернет"))
             }
         }
         var logs = SettingsController.collectLogsForUpload()
-        if (logs.length < 200) {
-            PageController.showNotificationMessage(
-                qsTr("Журнал пуст. Повтори то, что не работает, и нажми ещё раз"))
-            return
-        }
+        if (logs.length < 200) return    // писать ещё нечего
         xhr.send(logs)
     }
 
@@ -154,11 +143,13 @@ PageType {
     }
 
     Component.onCompleted: {
-        // Журнал ведём всегда: он локальный, ограничен по размеру, зато когда у человека
-        // что-то ломается — есть что прислать. Раньше был выключен, и первая же выгрузка
-        // пришла пустой (2026-08-11).
-        if (!SettingsController.isLoggingEnabled) {
-            SettingsController.isLoggingEnabled = true
+        if (root.draftBuild) {
+            // в черновой: включаем журнал и отправляем накопленное за прошлый запуск —
+            // именно там окажется момент поломки, о которой владелец расскажет словами
+            if (!SettingsController.isLoggingEnabled) {
+                SettingsController.isLoggingEnabled = true
+            }
+            root.uploadLogs()
         }
         // сперва показываем последнее известное — экран не должен быть пустым,
         // пока идёт запрос (или если сеть до сервера сейчас не достаёт)
@@ -314,53 +305,6 @@ PageType {
                             }
                         }
                     }
-                }
-            }
-
-            // Отправка логов разработчику: без неё отладка упиралась в то, что достать
-            // логи с телефона нечем — приходилось выгружать файл и пересылать вручную.
-            Rectangle {
-                Layout.fillWidth: true
-                radius: 16
-                color: root.cCard
-                border.color: root.cLine
-                border.width: 1
-                implicitHeight: logsRow.implicitHeight + 24
-
-                RowLayout {
-                    id: logsRow
-                    anchors.fill: parent
-                    anchors.leftMargin: 16
-                    anchors.rightMargin: 16
-                    anchors.topMargin: 12
-                    anchors.bottomMargin: 12
-                    spacing: 8
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Text {
-                            text: qsTr("🛠 Отправить логи разработчику")
-                            color: root.cInk
-                            font.family: "PT Root UI VF"
-                            font.weight: 700
-                            font.pixelSize: 15
-                        }
-                        Text {
-                            text: qsTr("Если что-то работает не так — отправь, поможет найти причину")
-                            color: root.cMuted
-                            font.family: "PT Root UI VF"
-                            font.pixelSize: 12
-                            wrapMode: Text.WordWrap
-                            Layout.fillWidth: true
-                        }
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: root.uploadLogs()
                 }
             }
 

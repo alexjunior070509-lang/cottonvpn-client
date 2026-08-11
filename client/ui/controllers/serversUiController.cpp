@@ -294,10 +294,22 @@ QString ServersUiController::getDefaultServerXrayClientId() const
     if (defaultServerId.isEmpty()) {
         return {};
     }
-    const ContainerConfig containerConfig =
-            m_serversController->getContainerConfig(defaultServerId, DockerContainer::Xray);
-    const auto *xrayConfig = containerConfig.protocolConfig.as<XrayProtocolConfig>();
-    if (!xrayConfig || !xrayConfig->hasClientConfig()) {
+    // ⚠️ Контейнер берём ДЕФОЛТНЫЙ, а не жёстко Xray: ключ может лежать под SSXray или
+    // прийти сторонним конфигом, и тогда запрос по фиксированному типу возвращал пустоту —
+    // приложение переставало сообщать серверу версию и не показывало карточку подписки
+    // (поймано 2026-08-11: в базе версия зависла на 1.4.0).
+    const DockerContainer defaultContainer = m_serversController->getDefaultContainer(defaultServerId);
+    const XrayProtocolConfig *xrayConfig = nullptr;
+    for (const DockerContainer c : { defaultContainer, DockerContainer::Xray, DockerContainer::SSXray }) {
+        const ContainerConfig cc = m_serversController->getContainerConfig(defaultServerId, c);
+        if (const auto *cfg = cc.protocolConfig.as<XrayProtocolConfig>()) {
+            if (cfg->hasClientConfig()) {
+                xrayConfig = cfg;
+                break;
+            }
+        }
+    }
+    if (!xrayConfig) {
         return {};
     }
     const QJsonDocument doc = QJsonDocument::fromJson(xrayConfig->clientConfig->nativeConfig.toUtf8());
