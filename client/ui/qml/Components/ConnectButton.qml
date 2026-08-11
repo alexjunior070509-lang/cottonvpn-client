@@ -227,7 +227,16 @@ Button {
         }
     }
 
+    // Проверка перед подключением (задаёт страница): вернёт false — подключение не
+    // начинаем. Нужна, чтобы без активной подписки не крутилось «Подключение…» вечно:
+    // туннель без пира на сервере всё равно не встанет.
+    property var connectGuard: null
+
     onClicked: {
+        if (connectGuard && !ConnectionController.isConnected
+                && !ConnectionController.isConnectionInProgress && !connectGuard()) {
+            return
+        }
         ConnectionController.connectButtonClicked()
     }
 

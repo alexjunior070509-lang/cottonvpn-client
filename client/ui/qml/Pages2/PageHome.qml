@@ -47,35 +47,52 @@ PageType {
     // Идентификатор — pubkey AWG-ключа; заодно репортим свою версию,
     // чтобы бот мог показать «доступно обновление».
     property var subInfo: null
+    // подписки под этим ключом на сервере нет (ответ 404) — не путать с «сеть не ответила»
+    property bool subMissing: false
 
-    // Первый запрос сразу после старта/переключения ключа иногда ловит непрогретое
-    // соединение (DNS/TLS) и падает — один автоматический повтор через паузу, чтобы
-    // юзер не видел «подписка не активна» из-за разового сетевого сбоя.
+    // Хосты статуса: основной за Cloudflare, запасной — прямой адрес нашего сервера.
+    // Нужен, потому что диапазон Cloudflare у части операторов блокируется: карточка
+    // тогда просто не появлялась. Повтор идёт на ДРУГОЙ хост, а не на тот же.
+    readonly property var subInfoHosts: ["https://webhook.cottonvpn.com",
+                                         "https://origin.cottonvpn.com:9443"]
+
     Timer {
         id: subInfoRetryTimer
         interval: 4000
         repeat: false
-        onTriggered: root.refreshSubInfo(true)
+        onTriggered: root.refreshSubInfo(1)
     }
 
-    function refreshSubInfo(isRetry) {
-        if (!root.hasServer) { root.subInfo = null; return }
+    function refreshSubInfo(hostIndex) {
+        var idx = hostIndex || 0
+        if (!root.hasServer) { root.subInfo = null; root.subMissing = false; return }
         var pub = ServersUiController.getDefaultServerAwgClientPubKey()
-        if (!pub) { root.subInfo = null; return }
-        var url = "https://webhook.cottonvpn.com/app/status?pub=" + encodeURIComponent(pub)
+        if (!pub) { root.subInfo = null; root.subMissing = false; return }
+        var url = root.subInfoHosts[idx] + "/app/status?pub=" + encodeURIComponent(pub)
                 + "&v=" + encodeURIComponent(SettingsController.getReleaseVersion())
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) return
             if (xhr.status === 200) {
-                try { root.subInfo = JSON.parse(xhr.responseText) } catch (e) {}
-            } else if (!isRetry) {
-                subInfoRetryTimer.start()
+                try {
+                    root.subInfo = JSON.parse(xhr.responseText)
+                    root.subMissing = false
+                } catch (e) {}
+            } else if (xhr.status === 404) {
+                // сервер ответил: ключа нет в базе — подписки нет, повторять бессмысленно
+                root.subInfo = null
+                root.subMissing = true
+            } else if (idx + 1 < root.subInfoHosts.length) {
+                subInfoRetryTimer.start()   // сеть не ответила — пробуем прямой адрес
             }
         }
         xhr.send()
     }
+
+    // подписки нет или она кончилась — подключаться бессмысленно, туннель просто не встанет
+    readonly property bool subBlocksConnect: root.subMissing
+                                             || (root.subInfo !== null && root.subInfo.active === false)
 
     function daysWord(n) {
         var m10 = n % 10, m100 = n % 100
@@ -87,6 +104,15 @@ PageType {
     Component.onCompleted: refreshSubInfo()
     onIsOnChanged: refreshSubInfo()
     onHasServerChanged: refreshSubInfo()
+
+    // возврат в приложение — перезапрашиваем: если карточка не появилась из-за
+    // недоступной сети, ждать до следующего 15-минутного тика бессмысленно
+    Connections {
+        target: Qt.application
+        function onStateChanged() {
+            if (Qt.application.state === Qt.ApplicationActive) root.refreshSubInfo()
+        }
+    }
 
     Timer {
         interval: 15 * 60 * 1000
@@ -323,6 +349,15 @@ PageType {
             visible: !root.showKeyField
             Layout.alignment: Qt.AlignHCenter
 
+            // без активной подписки не даём уйти в бесконечное «Подключение…»
+            connectGuard: function() {
+                if (!root.subBlocksConnect) return true
+                PageController.showNotificationMessage(
+                    root.subMissing ? qsTr("Подписка не найдена — оформи её в боте и добавь ключ заново")
+                                    : qsTr("Подписка закончилась — продли её в боте, и VPN снова заработает"))
+                return false
+            }
+
             defaultButtonColor: root.cMuted        // кольцо/глиф когда выключено
             connectedButtonColor: root.cGreen      // кольцо когда включено
             connectedFillColor: root.cGreen        // заливка круга когда включено
@@ -370,6 +405,32 @@ PageType {
                 Layout.alignment: Qt.AlignHCenter
                 text: root.isOn ? qsTr("Соединение защищено")
                                 : (root.isBusy ? qsTr("Устанавливаем соединение") : qsTr("Нажми кнопку, чтобы включить"))
+                color: root.cMuted
+                font.family: "PT Root UI VF"
+                font.pixelSize: 14
+            }
+        }
+
+        // подписки нет или истекла — говорим прямо, а не прячем карточку молча
+        Rectangle {
+            visible: !root.showKeyField && root.subBlocksConnect
+            Layout.fillWidth: true
+            Layout.topMargin: 18
+            radius: 16
+            color: root.cCard
+            border.color: root.cLine
+            border.width: 1
+            implicitHeight: subGoneText.implicitHeight + 28
+
+            Text {
+                id: subGoneText
+                anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter }
+                anchors.leftMargin: 16
+                anchors.rightMargin: 16
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+                text: root.subMissing ? qsTr("Подписка не найдена — оформи её в боте и добавь ключ заново")
+                                      : qsTr("Подписка закончилась — продли её в боте")
                 color: root.cMuted
                 font.family: "PT Root UI VF"
                 font.pixelSize: 14

@@ -51,6 +51,9 @@ class AmneziaTileService : TileService() {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 Log.d(TAG, "Service ${name?.flattenToString()} was connected")
                 vpnServiceMessenger.set(Messenger(service))
+                // set() больше не досылает очередь сам (см. IpcMessenger) — тайлу регистрация
+                // не нужна, поэтому досылаем сразу здесь, иначе команда из шторки потерялась бы
+                vpnServiceMessenger.flushPending()
                 isServiceConnected = true
             }
 

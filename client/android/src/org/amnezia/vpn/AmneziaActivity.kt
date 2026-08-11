@@ -156,6 +156,10 @@ class AmneziaActivity : QtActivity() {
                     replyTo = activityMessenger
                 )
                 isServiceConnected = true
+                // CottonVPN: команды, накопленные пока привязки не было (например «выключить»),
+                // досылаем ТОЛЬКО ЗДЕСЬ — после REGISTER_CLIENT. Иначе сервис исполнял их,
+                // когда слушателя ещё нет, и подтверждение статуса терялось (кнопка залипала).
+                vpnServiceMessenger.flushPending()
                 // CottonVPN: всегда запрашиваем реальный статус при подключении к сервису (в т.ч.
                 // при возврате в приложение) — иначе кнопка «застревала» в неверном состоянии.
                 vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)

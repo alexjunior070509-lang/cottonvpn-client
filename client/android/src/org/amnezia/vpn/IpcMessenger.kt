@@ -30,13 +30,22 @@ class IpcMessenger(
         this.messenger = messenger
     }
 
+    // ⚠️ set() НЕ досылает очередь сам. Раньше досылал — и накопленный DISCONNECT улетал
+    // в сервис ДО того, как активность успевала зарегистрироваться клиентом (REGISTER_CLIENT
+    // отправляется следующей строкой). Сервис честно выключал VPN, но уведомлять о смене
+    // статуса было ещё некого: подтверждение не приходило, кнопка оставалась зелёной при
+    // выключенном VPN. Досылку теперь запускает вызывающий — ПОСЛЕ регистрации.
     fun set(messenger: Messenger) {
         this.messenger = messenger
-        if (pending.isNotEmpty()) {
-            val queued = pending.toList()
-            pending.clear()
-            queued.forEach { messenger.sendMsg(it) }
-        }
+    }
+
+    /** Досылает команды, накопленные пока привязки не было. Звать после REGISTER_CLIENT. */
+    fun flushPending() {
+        val m = messenger ?: return
+        if (pending.isEmpty()) return
+        val queued = pending.toList()
+        pending.clear()
+        queued.forEach { m.sendMsg(it) }
     }
 
     fun reset() {
