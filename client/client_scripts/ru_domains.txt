@@ -1,5 +1,5 @@
-# РФ-домены для сплит-туннеля на xray-ядре (правила подставляет XrayConfigurator).
-# Источник и генератор — репозиторий cottonvpn, ops routing ru_domains.txt. Не править руками.
+# РФ-домены для сплит-туннеля на xray-ядре. Источник — ops routing ru_domains.txt
+# в репозитории cottonvpn, править там. Комментарии начинаются с решётки.
 1917live.red
 1prime.ru
 1tv.ru
@@ -56,6 +56,8 @@ alfa.me
 alfabank.ru
 alfabank.st
 alfadirect.ru
+alfastrah.ru
+aliexpress.ru
 altai.ru
 amediateka.ru
 amur.ru
@@ -117,11 +119,13 @@ bm-bank.ru
 book-catalog.ru
 book1917.live
 booking-tec.ru
+boxberry.ru
 bps-sberbank.by
 bristol.ru
 broker.ru
 bryansk.ru
 bspb.ru
+burgerkingrus.ru
 buryatia.ru
 capitalt.ru
 cardsmobile.ru
@@ -176,6 +180,7 @@ digital-wb.ru
 digitalwb.ru
 dixy.ru
 dns-shop.ru
+docdoc.ru
 doctorhead.ru
 dodois.com
 dodois.io
@@ -214,6 +219,7 @@ enterly.ru
 era-invest.ru
 error-tracking.megamarket.tech
 es-rt.com
+esia.gosuslugi.ru
 esrt.online
 esrt.press
 esrt.site
@@ -275,6 +281,7 @@ ibamoscow.ru
 id.ru
 idx5.ru
 ilovesakura.ru
+ingos.ru
 inosmi.ru
 irk.ru
 irkutsk.ru
@@ -366,6 +373,7 @@ marine.ru
 marketing-info.wildberries.ru
 marketplace-sentry.wb.ru
 max-tcs.ru
+max.ru
 medsi-premium.ru
 medsi.com
 medsi.pro
@@ -379,9 +387,11 @@ metro.spb.ru
 mfk-bank.ru
 mfk-t-finance.ru
 mgfoms.ru
+mgts.ru
 mhcb.ru
 mhcbr.ru
 mil.ru
+mironline.ru
 mk.ru
 mkb.ru
 mm.ru
@@ -463,6 +473,7 @@ ozon.ru
 ozon.tech
 ozon.tm
 ozon.travel
+ozonbank.ru
 ozoncamp.pro
 ozoncard.ru
 ozoncom.by
@@ -516,6 +527,7 @@ pskb.ru
 pskov.ru
 ptz.ru
 pvubank.com
+qiwi.com
 questions-adv.ozon.ru
 radiosputnik.ria.ru
 radiosputnik.ru
@@ -534,8 +546,10 @@ reaviz.ru
 regard.ru
 rencapbank.ru
 rencredit.ru
+renins.ru
 reso-med.com
 reso-med.ru
+reso.ru
 restnproducts.ru
 restream-media.net
 restream.ru
@@ -662,12 +676,14 @@ sbermarket.ru
 sbermarketing.ru
 sbermegamarket.ru
 sbermobile.ru
+sberpay.ru
 sberpb.ru
 sberpro.vedomosti.ru
 sberspasibo.ru
 sbertech.ru
 sbertroika.ru
 sbibankllc.ru
+sbp.nspk.ru
 sbrf.ru
 seb.ru
 selkombank.ru
@@ -676,11 +692,14 @@ sentry.sberauto.com
 sentry.wb.ru
 sentry.x5.ru
 sevastopol.ru
+sferum.ru
+sfr.gov.ru
 sfunpay.com
 sgcheck.ru
 shop-rt.com
 simbirsk.ru
 sinara.ru
+skysmart.ru
 slavbank.ru
 slavicstar.com
 smartmed.pro
@@ -689,6 +708,7 @@ smolensk.ru
 smotreshka.tv
 smotrim.ru
 sn-esp.site
+sogaz.ru
 sokolov.io
 sokolov.ru
 solid.ru
@@ -786,6 +806,7 @@ tver.ru
 tvigle.ru
 tyumen.ru
 ubs.com
+uchi.ru
 udm.ru
 udmurtia.ru
 ukraina.ru
@@ -795,6 +816,7 @@ unidraw.io
 unirest.tech
 uralsib.ru
 userapi.com
+utair.ru
 vamzakaz.ru
 vedomosti.ru
 velberis.ru
@@ -822,6 +844,7 @@ voronezh.ru
 vrn.ru
 vseinstrumenti.ru
 vsemrabota.ru
+vsk.ru
 vtb-direct.com
 vtb-grants.fut.ru
 vtb.ru
@@ -956,6 +979,7 @@ xn--d1aqf.xn--p1ai
 xn--e1adjldbbpv.xn--90ais
 xn--h1ao.site
 ya.ru
+yaklass.ru
 yakutia.ru
 yamal.ru
 yandex.com
@@ -966,6 +990,7 @@ yandexcloud.net
 yaroslavl.ru
 yastatic.net
 yoobusiness.ru
+yoomoney.ru
 yuzhno-sakhalinsk.ru
 zdrav10.ru
 zenit-card.ru
