@@ -66,9 +66,12 @@ PageType {
     function refreshSubInfo(hostIndex) {
         var idx = hostIndex || 0
         if (!root.hasServer) { root.subInfo = null; root.subMissing = false; return }
+        // AWG-ключ опознаётся по pubkey, Reality-ключ — по UUID клиента
         var pub = ServersUiController.getDefaultServerAwgClientPubKey()
-        if (!pub) { root.subInfo = null; root.subMissing = false; return }
-        var url = root.subInfoHosts[idx] + "/app/status?pub=" + encodeURIComponent(pub)
+        var uuid = pub ? "" : ServersUiController.getDefaultServerXrayClientId()
+        if (!pub && !uuid) { root.subInfo = null; root.subMissing = false; return }
+        var url = root.subInfoHosts[idx] + "/app/status?"
+                + (pub ? "pub=" + encodeURIComponent(pub) : "uuid=" + encodeURIComponent(uuid))
                 + "&v=" + encodeURIComponent(SettingsController.getReleaseVersion())
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)

@@ -77,7 +77,7 @@ public slots:
     QString getDefaultServerAwgClientPubKey() const;
     // UUID клиента из xray-ключа — им подписка опознаётся на сервере, когда
     // устройство подключено не по AWG, а по Reality (см. /app/status)
-    Q_INVOKABLE QString getDefaultServerXrayClientId() const;
+    QString getDefaultServerXrayClientId() const;
 
     QString serverName(const QString &serverId) const;
     QString serverHostName(const QString &serverId) const;
