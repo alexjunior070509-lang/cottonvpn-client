@@ -694,6 +694,21 @@ class AmneziaActivity : QtActivity() {
     private fun disconnectFromVpn() {
         Log.d(TAG, "Disconnect from VPN")
         vpnServiceMessenger.send(Action.DISCONNECT)
+        // CottonVPN: подтверждение «отключено» приходит асинхронно и иногда теряется —
+        // сервис успевал остановиться и отвязаться раньше, чем сообщение доходило до
+        // активности, и кнопка застывала зелёной при уже выключенном VPN (жалоба владельца
+        // 2026-08-11, сценарий «свернул с включённым VPN, вернулся, выключил»). Поэтому
+        // сами переспрашиваем реальный статус: если сервис жив — ответит, если нет —
+        // сработает onServiceDisconnected, который тоже переводит UI в «отключено».
+        for (delay in longArrayOf(1500L, 4000L)) {
+            resumeHandler.postDelayed({
+                if (isServiceConnected) {
+                    vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)
+                } else {
+                    QtAndroidController.onServiceDisconnected()
+                }
+            }, delay)
+        }
     }
 
     /**

@@ -122,15 +122,34 @@ jobs:
             out/CottonVPN-release.aab
           if-no-files-found: error
 
+      # Версия с суффиксом через дефис (1.4.3-rc1, 1.4.3-test) = ЧЕРНОВАЯ сборка:
+      # публикуется как pre-release. Такие релизы не попадают в releases/latest, поэтому
+      # ни ссылка «скачать последнюю версию», ни бот их не видят — можно катать правки
+      # сколько нужно, не гоняя пользователям версии и уведомления. Убрал суффикс →
+      # обычный релиз → бот спросит про рассылку. (Решение владельца 2026-08-11.)
       - name: Publish GitHub Release (stable download link)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="v${{ steps.ver.outputs.version }}"
+          VER="${{ steps.ver.outputs.version }}"
+          TAG="v$VER"
           NOTES_FILE=WHATSNEW.txt
           [ -f "$NOTES_FILE" ] || NOTES_FILE=/dev/null
+          case "$VER" in
+            *-*) CHANNEL="--prerelease"; TITLE="CottonVPN $VER (черновая)" ;;
+            *)   CHANNEL="--latest";     TITLE="CottonVPN $VER" ;;
+          esac
+          echo "Publishing $TAG as ${CHANNEL#--}"
           gh release create "$TAG" out/CottonVPN-arm64.apk out/CottonVPN-release.aab \
-            --title "CottonVPN ${{ steps.ver.outputs.version }}" \
+            --title "$TITLE" \
             --notes-file "$NOTES_FILE" \
-            --latest \
+            $CHANNEL \
           || { gh release upload "$TAG" out/CottonVPN-arm64.apk --clobber; gh release upload "$TAG" out/CottonVPN-release.aab --clobber; }
+
+      - name: Ссылка на сборку
+        run: |
+          VER="${{ steps.ver.outputs.version }}"
+          case "$VER" in
+            *-*) echo "Черновая сборка: https://github.com/${{ github.repository }}/releases/tag/v$VER" ;;
+            *)   echo "Релиз: https://github.com/${{ github.repository }}/releases/latest" ;;
+          esac
