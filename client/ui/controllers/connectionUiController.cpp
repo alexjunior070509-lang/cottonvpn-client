@@ -131,8 +131,12 @@ QString ConnectionUiController::connectionStateText() const
 
 void ConnectionUiController::toggleConnection()
 {
+    // Нажатие во время подключения = отмена. Раньше в состоянии Preparing нажатие только
+    // показывало «идёт подготовка» и ничего не отменяло — юзер оставался с крутящейся
+    // кнопкой без способа её остановить (жалоба владельца 2026-08-11).
     if (m_state == Vpn::ConnectionState::Preparing) {
         emit preparingConfig();
+        closeConnection();
         return;
     }
 

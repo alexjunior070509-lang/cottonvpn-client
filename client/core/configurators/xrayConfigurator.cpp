@@ -183,13 +183,13 @@ namespace {
 
         const QJsonArray domains = loadResourceList(QStringLiteral(":/client_scripts/ru_domains.txt"),
                                                     QStringLiteral("domain:"));
-        // ПОЛНЫЙ список сетей: маршруты здесь не уходят в систему (их разбирает ядро внутри
-        // туннеля), поэтому лимит Android на число маршрутов не действует. Урезанный
-        // ru_ip.txt остаётся для AmneziaWG, где сплит идёт именно системными маршрутами.
-        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip_full.txt"));
-        if (ips.isEmpty()) {
-            ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
-        }
+        // ⚠️ РАЗМЕР КОНФИГА КРИТИЧЕН. Готовый конфиг уезжает в VPN-сервис одним системным
+        // сообщением (binder), у которого жёсткий лимит на объём: с полным списком (22 743
+        // сети, 460 КБ) приложение падало ПРЯМО в момент нажатия кнопки — поймано на
+        // устройстве владельца 2026-08-11. Поэтому берём урезанный список сетей: он покрывает
+        // крупнейшие РФ-блоки и все сети наших сервисов, а доменные правила (их в WireGuard
+        // не было вовсе) добирают остальное.
+        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
         // приватные сети — тоже напрямую, иначе принтер и роутер уезжают в туннель
         for (const auto &n : { "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16" }) {
             ips.append(QString::fromLatin1(n));
@@ -209,8 +209,19 @@ namespace {
         routing[QStringLiteral("rules")] = rules;
         cfg[QStringLiteral("routing")] = routing;
 
-        logger.info() << "RU split: injected" << domains.size() << "domains and" << ips.size() << "networks";
-        pc.setNativeConfig(QString::fromUtf8(QJsonDocument(cfg).toJson(QJsonDocument::Compact)));
+        // страховка на будущее: если список когда-нибудь распухнет, лучше остаться без
+        // сплита, чем уронить приложение при подключении
+        const QByteArray packed = QJsonDocument(cfg).toJson(QJsonDocument::Compact);
+        constexpr int kMaxConfigBytes = 192 * 1024;
+        if (packed.size() > kMaxConfigBytes) {
+            logger.warning() << "RU split: config too big (" << packed.size()
+                             << "bytes), skipping split to keep the tunnel alive";
+            return;
+        }
+
+        logger.info() << "RU split: injected" << domains.size() << "domains and" << ips.size()
+                      << "networks," << packed.size() << "bytes";
+        pc.setNativeConfig(QString::fromUtf8(packed));
     }
 } // namespace
 

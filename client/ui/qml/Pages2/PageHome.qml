@@ -27,6 +27,16 @@ PageType {
         category: "cotton"
         property string theme: "auto"
     }
+
+    // Последний известный статус подписки. Держим на диске, чтобы карточка была на экране
+    // ВСЕГДА (просьба владельца 2026-08-11), а не только когда свежий запрос успел пройти:
+    // при выключенном VPN или в «плохом окне» сети запрос может не дойти, и раньше карточка
+    // просто исчезала. Показываем последнее известное, пока не приедет новое.
+    Settings {
+        id: subCache
+        category: "cotton"
+        property string lastStatus: ""
+    }
     // Qt::ColorScheme::Dark == 2 — числом, чтобы не зависеть от регистрации scoped-enum в QML
     readonly property bool systemDark: Application.styleHints.colorScheme === 2
     readonly property bool darkMode: themeSettings.theme === "auto" ? systemDark
@@ -81,11 +91,13 @@ PageType {
                 try {
                     root.subInfo = JSON.parse(xhr.responseText)
                     root.subMissing = false
+                    subCache.lastStatus = xhr.responseText
                 } catch (e) {}
             } else if (xhr.status === 404) {
                 // сервер ответил: ключа нет в базе — подписки нет, повторять бессмысленно
                 root.subInfo = null
                 root.subMissing = true
+                subCache.lastStatus = ""
             } else if (idx + 1 < root.subInfoHosts.length) {
                 subInfoRetryTimer.start()   // сеть не ответила — пробуем прямой адрес
             }
@@ -104,7 +116,14 @@ PageType {
         return qsTr("дней")
     }
 
-    Component.onCompleted: refreshSubInfo()
+    Component.onCompleted: {
+        // сперва показываем последнее известное — экран не должен быть пустым,
+        // пока идёт запрос (или если сеть до сервера сейчас не достаёт)
+        if (subCache.lastStatus !== "") {
+            try { root.subInfo = JSON.parse(subCache.lastStatus) } catch (e) {}
+        }
+        refreshSubInfo()
+    }
     onIsOnChanged: refreshSubInfo()
     onHasServerChanged: refreshSubInfo()
 
