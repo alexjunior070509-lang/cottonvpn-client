@@ -3,5 +3,6 @@
         <file>mac_installer.sh</file>
         <file>ru_ip.txt</file>
         <file>ru_domains.txt</file>
+        <file>ru_ip_full.txt</file>
     </qresource>
 </RCC>

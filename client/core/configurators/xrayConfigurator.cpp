@@ -183,7 +183,13 @@ namespace {
 
         const QJsonArray domains = loadResourceList(QStringLiteral(":/client_scripts/ru_domains.txt"),
                                                     QStringLiteral("domain:"));
-        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
+        // ПОЛНЫЙ список сетей: маршруты здесь не уходят в систему (их разбирает ядро внутри
+        // туннеля), поэтому лимит Android на число маршрутов не действует. Урезанный
+        // ru_ip.txt остаётся для AmneziaWG, где сплит идёт именно системными маршрутами.
+        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip_full.txt"));
+        if (ips.isEmpty()) {
+            ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
+        }
         // приватные сети — тоже напрямую, иначе принтер и роутер уезжают в туннель
         for (const auto &n : { "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16" }) {
             ips.append(QString::fromLatin1(n));
