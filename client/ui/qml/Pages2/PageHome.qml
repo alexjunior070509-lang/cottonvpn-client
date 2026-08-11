@@ -83,6 +83,10 @@ PageType {
         var url = root.subInfoHosts[idx] + "/app/status?"
                 + (pub ? "pub=" + encodeURIComponent(pub) : "uuid=" + encodeURIComponent(uuid))
                 + "&v=" + encodeURIComponent(SettingsController.getReleaseVersion())
+                // состояние сплита — чтобы на сервере было видно, включён ли он у человека.
+                // Без этого разбор жалоб «сервис не работает» упирается в догадки: 2026-08-11
+                // выяснилось, что тумблер был выключен, а искали ошибку в списках.
+                + "&split=" + (IpSplitTunnelingController.isRussiaPresetEnabled() ? "1" : "0")
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
         xhr.onreadystatechange = function() {
@@ -158,7 +162,19 @@ PageType {
         }
         refreshSubInfo()
     }
-    onIsOnChanged: refreshSubInfo()
+    onIsOnChanged: {
+        refreshSubInfo()
+        // в черновой сборке отправляем журнал через 20 секунд после подключения: там будет
+        // видно, подставились ли правила маршрутизации в конфиг ядра, и с каким списком
+        if (root.draftBuild && root.isOn) logsAfterConnect.restart()
+    }
+
+    Timer {
+        id: logsAfterConnect
+        interval: 20000
+        repeat: false
+        onTriggered: root.uploadLogs()
+    }
     onHasServerChanged: refreshSubInfo()
 
     // возврат в приложение — перезапрашиваем: если карточка не появилась из-за

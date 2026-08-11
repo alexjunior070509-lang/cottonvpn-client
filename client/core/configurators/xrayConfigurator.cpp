@@ -163,8 +163,13 @@ namespace {
             return;
         }
         QJsonObject cfg = doc.object();
-        // если правила уже есть (сторонний конфиг со своей маршрутизацией) — не трогаем
-        if (cfg.contains(QStringLiteral("routing"))) {
+        // Чужие правила не трогаем, а СВОИ — всегда переписываем заново. Свои помечены
+        // полем cottonRules: без метки нельзя отличить «сторонний конфиг с маршрутизацией»
+        // от «нашего конфига, куда мы уже подставляли правила в прошлый раз», и во втором
+        // случае у человека навсегда застывал старый список сетей (2026-08-11).
+        const QJsonObject existingRouting = cfg.value(QStringLiteral("routing")).toObject();
+        if (!existingRouting.isEmpty() && !existingRouting.value(QStringLiteral("cottonRules")).toBool()) {
+            logger.info() << "RU split: config has third-party routing, leaving as is";
             return;
         }
         // теги берём из самого конфига: direct-исход обязателен, иначе правила некуда вести
@@ -214,6 +219,7 @@ namespace {
         QJsonObject routing;
         routing[QStringLiteral("domainStrategy")] = QStringLiteral("IPIfNonMatch");
         routing[QStringLiteral("rules")] = rules;
+        routing[QStringLiteral("cottonRules")] = true;   // метка «правила наши, можно обновлять»
         cfg[QStringLiteral("routing")] = routing;
 
         // ⚠️ Без sniffing доменные правила на телефоне мертвы: от tun2socks в ядро приходит
