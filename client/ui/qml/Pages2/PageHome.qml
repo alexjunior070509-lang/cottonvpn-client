@@ -107,6 +107,15 @@ PageType {
 
     function uploadLogs(hostIndex) {
         var idx = hostIndex || 0
+        // Журнал в приложении по умолчанию выключен — без него отправлять нечего
+        // (первая присланная выгрузка оказалась пустой, 2026-08-11). Включаем и просим
+        // повторить действие: записи появятся только с этого момента.
+        if (!SettingsController.isLoggingEnabled) {
+            SettingsController.isLoggingEnabled = true
+            PageController.showNotificationMessage(
+                qsTr("Запись включена. Повтори то, что не работает, и нажми ещё раз"))
+            return
+        }
         var pub = ServersUiController.getDefaultServerAwgClientPubKey()
         var uuid = pub ? "" : ServersUiController.getDefaultServerXrayClientId()
         var url = root.subInfoHosts[idx] + "/app/logs?"
@@ -124,7 +133,13 @@ PageType {
                 PageController.showNotificationMessage(qsTr("Не удалось отправить логи — проверь интернет"))
             }
         }
-        xhr.send(SettingsController.collectLogsForUpload())
+        var logs = SettingsController.collectLogsForUpload()
+        if (logs.length < 200) {
+            PageController.showNotificationMessage(
+                qsTr("Журнал пуст. Повтори то, что не работает, и нажми ещё раз"))
+            return
+        }
+        xhr.send(logs)
     }
 
     // подписки нет или она кончилась — подключаться бессмысленно, туннель просто не встанет
@@ -139,6 +154,12 @@ PageType {
     }
 
     Component.onCompleted: {
+        // Журнал ведём всегда: он локальный, ограничен по размеру, зато когда у человека
+        // что-то ломается — есть что прислать. Раньше был выключен, и первая же выгрузка
+        // пришла пустой (2026-08-11).
+        if (!SettingsController.isLoggingEnabled) {
+            SettingsController.isLoggingEnabled = true
+        }
         // сперва показываем последнее известное — экран не должен быть пустым,
         // пока идёт запрос (или если сеть до сервера сейчас не достаёт)
         if (subCache.lastStatus !== "") {
