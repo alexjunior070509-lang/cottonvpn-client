@@ -209,6 +209,31 @@ namespace {
         routing[QStringLiteral("rules")] = rules;
         cfg[QStringLiteral("routing")] = routing;
 
+        // ⚠️ Без sniffing доменные правила на телефоне мертвы: от tun2socks в ядро приходит
+        // уже IP-соединение, имени сайта в нём нет. Поймано на устройстве владельца
+        // 2026-08-11: wb/ozon шли напрямую (их сети есть в списке), а 2ip.ru — через туннель,
+        // хотя домен в списке был. Sniffing достаёт имя из TLS/HTTP; routeOnly=true —
+        // имя идёт ТОЛЬКО в маршрутизацию, адрес назначения не подменяется.
+        QJsonArray inbounds = cfg.value(QStringLiteral("inbounds")).toArray();
+        for (int i = 0; i < inbounds.size(); ++i) {
+            QJsonObject in = inbounds.at(i).toObject();
+            if (in.value(QStringLiteral("protocol")).toString() != QLatin1String("socks")) {
+                continue;
+            }
+            QJsonObject sniffing = in.value(QStringLiteral("sniffing")).toObject();
+            if (!sniffing.value(QStringLiteral("enabled")).toBool()) {
+                sniffing[QStringLiteral("enabled")] = true;
+                sniffing[QStringLiteral("destOverride")] =
+                        QJsonArray { QStringLiteral("http"), QStringLiteral("tls"), QStringLiteral("quic") };
+                sniffing[QStringLiteral("routeOnly")] = true;
+                in[QStringLiteral("sniffing")] = sniffing;
+                inbounds[i] = in;
+                cfg[QStringLiteral("inbounds")] = inbounds;
+                logger.info() << "RU split: sniffing enabled on socks inbound (domain rules need it)";
+            }
+            break;
+        }
+
         // страховка на будущее: если список когда-нибудь распухнет, лучше остаться без
         // сплита, чем уронить приложение при подключении
         const QByteArray packed = QJsonDocument(cfg).toJson(QJsonDocument::Compact);
