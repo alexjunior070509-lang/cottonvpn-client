@@ -48,6 +48,9 @@ public slots:
     void openLogsFolder();
     void openServiceLogsFolder();
     void exportLogsFile(const QString &fileName);
+    // CottonVPN: текст логов для отправки разработчику прямо из приложения —
+    // выгружать файл вручную с телефона слишком муторно (2026-08-11)
+    QString collectLogsForUpload() const;
     void exportServiceLogsFile(const QString &fileName);
     void clearLogs();
 

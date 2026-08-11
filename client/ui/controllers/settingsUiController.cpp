@@ -122,6 +122,22 @@ void SettingsUiController::exportServiceLogsFile(const QString &fileName)
 #endif
 }
 
+QString SettingsUiController::collectLogsForUpload() const
+{
+    // Берём хвост: полный лог бывает в мегабайты, а для разбора хватает последних событий.
+    // Логи приложения и сервиса склеиваем — падения туннеля видны именно в сервисном.
+    constexpr int kTailBytes = 400 * 1024;
+    auto tail = [](QString text) {
+        return text.size() > kTailBytes ? text.right(kTailBytes) : text;
+    };
+    QString out = QStringLiteral("=== app ===\n") + tail(Logger::getLogFile());
+    const QString service = Logger::getServiceLogFile();
+    if (!service.isEmpty()) {
+        out += QStringLiteral("\n\n=== service ===\n") + tail(service);
+    }
+    return out;
+}
+
 void SettingsUiController::clearLogs()
 {
     m_settingsController->clearLogs();

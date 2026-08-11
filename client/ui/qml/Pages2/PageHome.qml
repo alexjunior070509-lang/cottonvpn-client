@@ -105,6 +105,28 @@ PageType {
         xhr.send()
     }
 
+    function uploadLogs(hostIndex) {
+        var idx = hostIndex || 0
+        var pub = ServersUiController.getDefaultServerAwgClientPubKey()
+        var uuid = pub ? "" : ServersUiController.getDefaultServerXrayClientId()
+        var url = root.subInfoHosts[idx] + "/app/logs?"
+                + (pub ? "pub=" + encodeURIComponent(pub) : "uuid=" + encodeURIComponent(uuid))
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST", url)
+        xhr.setRequestHeader("Content-Type", "text/plain; charset=utf-8")
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return
+            if (xhr.status === 200) {
+                PageController.showNotificationMessage(qsTr("Логи отправлены, спасибо"))
+            } else if (idx + 1 < root.subInfoHosts.length) {
+                root.uploadLogs(idx + 1)     // основной адрес недоступен — пробуем прямой
+            } else {
+                PageController.showNotificationMessage(qsTr("Не удалось отправить логи — проверь интернет"))
+            }
+        }
+        xhr.send(SettingsController.collectLogsForUpload())
+    }
+
     // подписки нет или она кончилась — подключаться бессмысленно, туннель просто не встанет
     readonly property bool subBlocksConnect: root.subMissing
                                              || (root.subInfo !== null && root.subInfo.active === false)
@@ -271,6 +293,53 @@ PageType {
                             }
                         }
                     }
+                }
+            }
+
+            // Отправка логов разработчику: без неё отладка упиралась в то, что достать
+            // логи с телефона нечем — приходилось выгружать файл и пересылать вручную.
+            Rectangle {
+                Layout.fillWidth: true
+                radius: 16
+                color: root.cCard
+                border.color: root.cLine
+                border.width: 1
+                implicitHeight: logsRow.implicitHeight + 24
+
+                RowLayout {
+                    id: logsRow
+                    anchors.fill: parent
+                    anchors.leftMargin: 16
+                    anchors.rightMargin: 16
+                    anchors.topMargin: 12
+                    anchors.bottomMargin: 12
+                    spacing: 8
+
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+                        Text {
+                            text: qsTr("🛠 Отправить логи разработчику")
+                            color: root.cInk
+                            font.family: "PT Root UI VF"
+                            font.weight: 700
+                            font.pixelSize: 15
+                        }
+                        Text {
+                            text: qsTr("Если что-то работает не так — отправь, поможет найти причину")
+                            color: root.cMuted
+                            font.family: "PT Root UI VF"
+                            font.pixelSize: 12
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.uploadLogs()
                 }
             }
 
