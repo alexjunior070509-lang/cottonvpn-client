@@ -2,6 +2,7 @@
     <qresource prefix="/client_scripts">
         <file>mac_installer.sh</file>
         <file>ru_ip.txt</file>
+        <file>ru_ip_xray.txt</file>
         <file>ru_domains.txt</file>
     </qresource>
 </RCC>

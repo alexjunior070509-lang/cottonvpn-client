@@ -189,7 +189,14 @@ namespace {
         // устройстве владельца 2026-08-11. Поэтому берём урезанный список сетей: он покрывает
         // крупнейшие РФ-блоки и все сети наших сервисов, а доменные правила (их в WireGuard
         // не было вовсе) добирают остальное.
-        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
+        // На этом ядре маршруты не уходят в систему, поэтому список сетей берём ШИРЕ
+        // (ru_ip_xray.txt, ~6000 сетей = 94% адресного пространства РФ против 70% у
+        // урезанного ru_ip.txt, который остаётся для AmneziaWG). Ограничение здесь одно —
+        // размер конфига, он проверяется ниже.
+        QJsonArray ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip_xray.txt"));
+        if (ips.isEmpty()) {
+            ips = loadResourceList(QStringLiteral(":/client_scripts/ru_ip.txt"));
+        }
         // приватные сети — тоже напрямую, иначе принтер и роутер уезжают в туннель
         for (const auto &n : { "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16" }) {
             ips.append(QString::fromLatin1(n));
