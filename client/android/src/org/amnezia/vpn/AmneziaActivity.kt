@@ -76,6 +76,8 @@ private const val CHECK_NOTIFICATION_PERMISSION_ACTION_CODE = 4
 
 private const val PREFS_NOTIFICATION_PERMISSION_ASKED = "NOTIFICATION_PERMISSION_ASKED"
 private const val OPEN_FILE_AFTER_RESUME_DELAY_MS = 400L
+// как часто переспрашивать статус, пока приложение на экране (см. statusPoller)
+private const val STATUS_POLL_INTERVAL_MS = 2000L
 private const val KEY_PENDING_OPEN_FILE_URI = "pending_open_file_uri"
 
 class AmneziaActivity : QtActivity() {
@@ -372,6 +374,7 @@ class AmneziaActivity : QtActivity() {
         super.onPause()
         isActivityResumed = false
         // Cancel all pending operations when activity pauses
+        stopStatusPolling()
         resumeHandler.removeCallbacksAndMessages(null)
         openFileDeliveryScheduled = false
         Log.d(TAG, "Pause Amnezia activity")
@@ -381,6 +384,7 @@ class AmneziaActivity : QtActivity() {
         super.onResume()
         isActivityResumed = true
         Log.d(TAG, "Resume Amnezia activity")
+        startStatusPolling()
         if (qtInitialized.isCompleted) {
             QtAndroidController.onActivityResumed()
         }
@@ -688,6 +692,32 @@ class AmneziaActivity : QtActivity() {
                 QtAndroidController.onServiceError()
             }
         }
+    }
+
+    // CottonVPN: пока приложение на экране, раз в 2 секунды спрашиваем у VPN-сервиса
+    // РЕАЛЬНОЕ состояние. Раньше кнопка целиком полагалась на уведомления от сервиса:
+    // потерялось сообщение — и она врала до перезапуска приложения, потому что переспросить
+    // было некому. Каждый потерянный путь чинили отдельной заплаткой (досылка команды,
+    // переспрос после выключения), но класс проблемы оставался. С опросом любое потерянное
+    // уведомление исправляется само за пару секунд, независимо от причины потери.
+    // Стоит это дёшево: локальное сообщение соседнему процессу, сеть не задействована.
+    private val statusPoller = object : Runnable {
+        override fun run() {
+            if (!isActivityResumed) return
+            if (isServiceConnected) {
+                vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)
+            }
+            resumeHandler.postDelayed(this, STATUS_POLL_INTERVAL_MS)
+        }
+    }
+
+    private fun startStatusPolling() {
+        resumeHandler.removeCallbacks(statusPoller)
+        resumeHandler.post(statusPoller)
+    }
+
+    private fun stopStatusPolling() {
+        resumeHandler.removeCallbacks(statusPoller)
     }
 
     @MainThread
