@@ -13,6 +13,9 @@ import android.content.Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.net.VpnService
 import android.os.Build
@@ -56,6 +59,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.amnezia.vpn.protocol.ProtocolState
 import org.amnezia.vpn.protocol.getStatistics
 import org.amnezia.vpn.protocol.getStatus
 import org.amnezia.vpn.qt.QtAndroidController
@@ -375,6 +379,7 @@ class AmneziaActivity : QtActivity() {
         isActivityResumed = false
         // Cancel all pending operations when activity pauses
         stopStatusPolling()
+        stopVpnStateWatch()
         resumeHandler.removeCallbacksAndMessages(null)
         openFileDeliveryScheduled = false
         Log.d(TAG, "Pause Amnezia activity")
@@ -385,6 +390,7 @@ class AmneziaActivity : QtActivity() {
         isActivityResumed = true
         Log.d(TAG, "Resume Amnezia activity")
         startStatusPolling()
+        startVpnStateWatch()
         if (qtInitialized.isCompleted) {
             QtAndroidController.onActivityResumed()
         }
@@ -691,6 +697,61 @@ class AmneziaActivity : QtActivity() {
                 Log.e(TAG, "Failed to start ${proto.serviceClass.simpleName}: $e")
                 QtAndroidController.onServiceError()
             }
+        }
+    }
+
+    // CottonVPN: САМЫЙ НАДЁЖНЫЙ источник правды о состоянии — сама система. Она знает,
+    // поднят ли на телефоне VPN-туннель, и сообщает об этом мгновенно, без наших уведомлений
+    // между процессами. Поэтому: система говорит «туннеля нет» → кнопка гаснет сразу, что бы
+    // там ни думало приложение. Система говорит «туннель есть» → уточняем у своего сервиса,
+    // наш ли это туннель (мог быть включён другой VPN), и уже он присылает точный статус.
+    private val connectivityManager: ConnectivityManager? by lazy(NONE) {
+        try {
+            getSystemService(ConnectivityManager::class.java)
+        } catch (e: Exception) {
+            Log.w(TAG, "ConnectivityManager unavailable: $e")
+            null
+        }
+    }
+    private var vpnStateCallback: ConnectivityManager.NetworkCallback? = null
+
+    private fun onSystemVpnState(isUp: Boolean) {
+        resumeHandler.post {
+            if (!isUp) {
+                Log.d(TAG, "System reports no VPN transport → disconnected")
+                QtAndroidController.onVpnStateChanged(ProtocolState.DISCONNECTED.ordinal)
+            } else if (isServiceConnected) {
+                vpnServiceMessenger.send(Action.REQUEST_STATUS, replyTo = activityMessenger)
+            }
+        }
+    }
+
+    private fun startVpnStateWatch() {
+        if (vpnStateCallback != null) return
+        val cm = connectivityManager ?: return
+        val cb = object : ConnectivityManager.NetworkCallback() {
+            override fun onCapabilitiesChanged(network: Network, caps: NetworkCapabilities) {
+                onSystemVpnState(caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN))
+            }
+
+            override fun onLost(network: Network) = onSystemVpnState(false)
+        }
+        try {
+            cm.registerDefaultNetworkCallback(cb)
+            vpnStateCallback = cb
+            Log.d(TAG, "System VPN state watch started")
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to watch system VPN state: $e")
+        }
+    }
+
+    private fun stopVpnStateWatch() {
+        val cb = vpnStateCallback ?: return
+        vpnStateCallback = null
+        try {
+            connectivityManager?.unregisterNetworkCallback(cb)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to stop system VPN state watch: $e")
         }
     }
 
