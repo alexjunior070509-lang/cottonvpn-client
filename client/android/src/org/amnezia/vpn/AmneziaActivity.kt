@@ -716,7 +716,13 @@ class AmneziaActivity : QtActivity() {
     private var vpnStateCallback: ConnectivityManager.NetworkCallback? = null
 
     private fun onSystemVpnState(isUp: Boolean) {
-        resumeHandler.post {
+        // JNI-методы QtAndroidController регистрирует сам Qt (AndroidController::initialize).
+        // Позвать их раньше — UnsatisfiedLinkError на главном потоке, то есть приложение
+        // падает на запуске: системный колбэк прилетает сразу после регистрации, а Qt к
+        // этому моменту ещё не поднялся (жалоба 1.4.3-rc11, «не открывается вообще»).
+        // Поэтому ждём инициализации, как это делают все остальные вызовы в файле.
+        mainScope.launch {
+            qtInitialized.await()
             if (!isUp) {
                 Log.d(TAG, "System reports no VPN transport → disconnected")
                 QtAndroidController.onVpnStateChanged(ProtocolState.DISCONNECTED.ordinal)
